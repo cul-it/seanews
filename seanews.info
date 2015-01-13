@@ -1,0 +1,6 @@
+; $Id$
+name = "Southeast Asia Newspaper Archive Tools"
+description = "Tools for Southeast Asia Newspaper Archive web site"
+package = Cornell University Library
+core = 7.x
+dependencies[] = transliteration
