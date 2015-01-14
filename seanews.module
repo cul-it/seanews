@@ -32,5 +32,6 @@ function computed_field_field_title_r_cul_translit_compute(&$entity_field, $enti
 }
 
 function computed_field_field_title_r_cul_translit_display($field, $entity_field_item, $entity_lang, $langcode) {
+  dsm(array('entity_field_item value', $entity_field_item['value']));
   return $entity_field_item['value'];
 }
