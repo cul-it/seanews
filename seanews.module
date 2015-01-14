@@ -28,6 +28,7 @@ function computed_field_field_title_r_cul_translit_compute(&$entity_field, $enti
     }
   $newspaper = strtolower(str_replace(' ', '-', $newspaper));
   $node_field[0]['value'] = t($newspaper);
+  dsm($newspaper);
 }
 
 function computed_field_field_title_r_cul_translit_display($field, $entity_field_item, $entity_lang, $langcode) {
