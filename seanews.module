@@ -46,7 +46,7 @@ function computed_field_field_pub_title_r_cul_path_compute(&$entity_field, $enti
 }
 
 function computed_field_field_pub_issue_pub_path_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
-  $pub_nid = array_pop(field_get_items($entity_type, $entity, 'field_pub_issue_pub'));
+  $pub_nid = field_get_items($entity_type, $entity, 'field_pub_issue_pub');
   dsm($pub_nid);
 }
 
