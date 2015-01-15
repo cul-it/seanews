@@ -21,6 +21,8 @@
  *
  * field_pub_title_native_translit - transliterate field_pub_title_native
  * field_pub_title_r_cul_path - make filename/url path from field_pub_title_r_cul
+ * field_pub_issue_pub_path - lookup publication pathname
+ *     via entity reference field_pub_issue_pub
  */
 
 function computed_field_field_pub_title_native_translit_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
@@ -41,6 +43,11 @@ function computed_field_field_pub_title_r_cul_path_compute(&$entity_field, $enti
   // replace blanks in path name with -
   $newspaper = strtolower(str_replace(' ', '-', $newspaper));
   $entity_field[0]['value'] = t($newspaper);
+}
+
+function computed_field_pub_issue_pub_path_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
+  $pub_nid = array_pop(array_pop(field_get_items($entity_type, $entity, 'field_pub_issue_pub')));
+  dsm($pub_nid);
 }
 
 function computed_field_field_title_r_cul_translit_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
