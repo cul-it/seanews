@@ -41,7 +41,6 @@ function computed_field_field_pub_title_r_cul_path_compute(&$entity_field, $enti
   // replace blanks in path name with -
   $newspaper = strtolower(str_replace(' ', '-', $newspaper));
   $entity_field[0]['value'] = t($newspaper);
-  dsm($newspaper);
 }
 
 function computed_field_field_title_r_cul_translit_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
