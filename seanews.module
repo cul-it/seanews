@@ -27,7 +27,8 @@
 
 function computed_field_field_pub_title_native_translit_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
   $field_items = field_get_items($entity_type, $entity, 'field_pub_title_native');
-  $native = array_pop(($x = array_pop($field_items)));
+  $x = array_pop($field_items);
+  $native = array_pop($x);
   if (function_exists('transliteration_get')) {
     // replace untranslatable characters with underscore
     $native = transliteration_get($native, '_', language_default('language'));
@@ -49,7 +50,8 @@ function computed_field_field_pub_title_r_cul_path_compute(&$entity_field, $enti
 
 function computed_field_field_pub_issue_pub_path_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
   $field_items = field_get_items($entity_type, $entity, 'field_pub_issue_pub');
-  $pub_nid = array_pop(($x = array_pop($field_items)));
+  $x = array_pop($field_items);
+  $pub_nid = array_pop($x);
   $pub = node_load($pub_nid);
   $wrapper = entity_metadata_wrapper('node', $pub);
   $path = $wrapper->field_pub_title_r_cul_path->value();
@@ -58,7 +60,8 @@ function computed_field_field_pub_issue_pub_path_compute(&$entity_field, $entity
 
 function computed_field_field_title_r_cul_translit_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
   $field_items = field_get_items($entity_type, $entity, 'field_title_r_cul');
-  $newspaper = array_pop(($x = array_pop($field_items)));
+  $x = array_pop($field_items);
+  $newspaper = array_pop($x);
   if (function_exists('transliteration_get')) {
     $newspaper = transliteration_get($newspaper, '-', language_default('language'));
     }
