@@ -37,7 +37,8 @@ function computed_field_field_pub_title_native_translit_compute(&$entity_field, 
 
 function computed_field_field_pub_title_r_cul_path_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
   $field_items = field_get_items($entity_type, $entity, 'field_pub_title_r_cul');
-  $newspaper = array_pop(($x = array_pop($field_items)));
+  $x = array_pop($field_items);
+  $newspaper = array_pop($x);
   if (function_exists('transliteration_get')) {
     $newspaper = transliteration_get($newspaper, '-', language_default('language'));
     }
