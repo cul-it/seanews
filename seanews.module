@@ -80,14 +80,12 @@ function computed_field_field_expected_issue_lookup_compute(&$entity_field, $ent
   // find the date of the expected_issue
   $field_items = field_get_items($entity_type, $entity, 'field_expected_issue_date');
   $no_lang = array_pop($field_items);
-  $no_rep = array_pop($no_lang);
-  $expected_date = $no_rep['value'];
+  $expected_date = array_pop($no_lang);
 
   // find the publication of the expected_issue
   $field_items = field_get_items($entity_type, $entity, 'field_expected_issue_publication');
   $no_lang = array_pop($field_items);
-  $no_rep = array_pop($no_lang);
-  $expected_publication = $no_rep['target_id'];
+  $expected_publication= array_pop($no_lang);
 
   $query = new EntityFieldQuery();
 
