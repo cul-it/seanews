@@ -97,7 +97,6 @@ function computed_field_field_expected_issue_lookup_compute(&$entity_field, $ent
     ->fieldCondition('field_pub_issue_date', 'value', $expected_date, '=')
     ->fieldCondition('field_pub_issue_pub', 'target_id', $expected_publication, '=')
     ->fieldCondition('field_pub_issue_document', 'fid', 'NULL', '!=')
-    ->fieldOrderBy('changed', 'changed', 'DESC')
     ->range(0, 10)
     ->addMetaData('account', user_load(1)); // Run the query as user 1.
 
