@@ -76,5 +76,37 @@ function computed_field_field_title_r_cul_translit_compute(&$entity_field, $enti
 
 function computed_field_field_expected_issue_lookup_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
   $found_nid = 0;
+
+  // find the date of the expected_issue
+  $field_items = field_get_items($entity_type, $entity, 'field_expected_issue_date');
+  $no_lang = array_pop($field_items);
+  $no_rep = array_pop($no_lang);
+  $expected_date = $no_rep['value'];
+
+  // find the publication of the expected_issue
+  $field_items = field_get_items($entity_type, $entity, 'field_expected_issue_publication');
+  $no_lang = array_pop($field_items);
+  $no_rep = array_pop($no_lang);
+  $expected_publication = $no_rep['target_id'];
+
+  $query = new EntityFieldQuery();
+
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'publication_issue')
+    ->propertyCondition('status', NODE_PUBLISHED)
+    ->fieldCondition('field_pub_issue_date', 'value', $expected_date, '=')
+    ->fieldCondition('field_pub_issue_pub', 'target_id', $expected_publication, '=')
+    ->fieldCondition('field_pub_issue_document', 'fid', 'NULL', '!=')
+    ->fieldOrderBy('changed', 'changed', 'DESC')
+    ->range(0, 10)
+    ->addMetaData('account', user_load(1)); // Run the query as user 1.
+
+  $result = $query->execute();
+
+  if (isset($result['node'])) {
+    $publication_nids = array_keys($result['node']);
+    $found_nid = array_pop($publication_nids);
+  }
+
   $entity_field[0]['value'] = $found_nid;
 }
