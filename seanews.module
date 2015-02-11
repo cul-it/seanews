@@ -105,10 +105,5 @@ function computed_field_field_expected_issue_lookup_compute(&$entity_field, $ent
     $found_nid = array_pop($publication_nids);
   }
 
-  dsm(array('expected_date' => $expected_date,
-    'expected_publication' => $expected_publication,
-    'result' => $result,
-    ));
-
   $entity_field[0]['value'] = $found_nid;
 }
