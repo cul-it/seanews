@@ -21,15 +21,3 @@ function seanews_rules_action_info() {
     ),
   );
 }
-
-/**
- * Find any expected issue for this publication and date - register the publication node
- * after a publication issue is being saved/updated we find the corresponding
- * expected_issue and put the nid of the publication in a computed field
- * @param  node $node publication node
- * @return node       unmodified publication node
- */
-function seanews_action_node_register_expected_issue($node) {
-  dsm($node);
-  return array('node' => $node);
-}
