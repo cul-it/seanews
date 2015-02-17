@@ -149,7 +149,7 @@ function seanews_action_node_register_expected_issue($node) {
       // set up the node reference from expected_issue to publication_issue
       $expected->field_expected_issue_reference[$expected->language][0]['nid'] = $node->nid;
       //$expected->field_expected_issue_reference[$expected->language][0]['target_type'] = "node";
-      node_save($expected);
+      //node_save($expected);
     }
   }
 
