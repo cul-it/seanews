@@ -122,7 +122,7 @@ function seanews_action_node_lookup_issue($node) {
 
   dsm(array('found publication' => $found_nid));
 
-  //node_save($node);
+  node_save($node);
 
   return array('node' => $node);
 }
