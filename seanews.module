@@ -162,6 +162,7 @@ function seanews_action_node_register_expected_issue($node) {
  * @param  node $node expected_publication node
  * @return node       modified node
  */
+/*
 function seanews_action_node_lookup_issue($node) {
 
   // find the date of the expected_issue
@@ -199,3 +200,4 @@ function seanews_action_node_lookup_issue($node) {
 
   return array('node' => $node);
 }
+*/
