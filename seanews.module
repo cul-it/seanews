@@ -74,7 +74,7 @@ function computed_field_field_title_r_cul_translit_compute(&$entity_field, $enti
 //   return $entity_field_item['value'];
 // }
 
-function former_computed_field_field_expected_issue_lookup_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
+function computed_field_field_expected_issue_lookup_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
   $found_nid = 0;
 
   // find the date of the expected_issue
