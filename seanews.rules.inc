@@ -21,3 +21,7 @@ function seanews_rules_action_info() {
     ),
   );
 }
+
+/**
+ * action code is in the .module since rules can't find it here???
+ */
