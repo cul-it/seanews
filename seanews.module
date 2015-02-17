@@ -143,12 +143,14 @@ function seanews_action_node_register_expected_issue($node) {
 
   $result = $query->execute();
   if (isset($result['node'])) {
+    module_load_include('inc', 'date_repeat_entity', 'update');
     $expected_nids = array_keys($result['node']);
     foreach ($expected_nids as $nid) {
       $expected = node_load($nid);
       // set up the node reference from expected_issue to publication_issue
       $expected->field_expected_issue_reference[$expected->language][0]['nid'] = $node->nid;
       node_save($expected);
+      /* Notice: Undefined property: stdClass::$date_repeat_entity in date_repeat_entity_update_dates() (line 31 of /cul/data/aegir/platforms/dev-seanews-7.34-20150212-3/sites/all/modules/date_repeat_entity/includes/date_repeat_entity.update.inc). */
     }
   }
 
