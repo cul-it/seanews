@@ -195,7 +195,7 @@ function seanews_action_node_lookup_issue($node) {
     $found_nid = 0;
   }
 
-  $node->field_expected_issue_reference[$expected->language][0]['nid'] = $found_nid;
+  $node->field_expected_issue_reference[$node->language][0]['nid'] = $found_nid;
 
   return array('node' => $node);
 }
