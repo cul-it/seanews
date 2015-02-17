@@ -120,8 +120,6 @@ function seanews_action_node_lookup_issue($node) {
 
   $node->field_expected_issue_reference[$node->language][0]['nid'] = $found_nid;
 
-  dsm(array('found publication' => $found_nid));
-
   node_save($node);
 
   return array('node' => $node);
