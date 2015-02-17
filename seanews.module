@@ -147,8 +147,8 @@ function seanews_action_node_register_expected_issue($node) {
     foreach ($expected_nids as $nid) {
       $expected = node_load($nid);
       // set up the node reference from expected_issue to publication_issue
-      $expected->field_expected_issue_reference[$expected->language][0]['target_id'] = $node->nid;
-      $expected->field_expected_issue_reference[$expected->language][0]['target_type'] = "node";
+      $expected->field_expected_issue_reference[$expected->language][0]['nid'] = $node->nid;
+      //$expected->field_expected_issue_reference[$expected->language][0]['target_type'] = "node";
       node_save($expected);
     }
   }
