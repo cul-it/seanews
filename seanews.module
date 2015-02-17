@@ -143,7 +143,7 @@ function seanews_action_node_register_expected_issue($node) {
 
   $result = $query->execute();
   if (isset($result['node'])) {
-    module_load_include('inc', 'date_repeat_entity', 'update');
+    module_load_include('inc', 'date_repeat_entity');
     $expected_nids = array_keys($result['node']);
     foreach ($expected_nids as $nid) {
       $expected = node_load($nid);
