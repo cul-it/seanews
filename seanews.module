@@ -125,7 +125,7 @@ function seanews_action_node_register_expected_issue($node) {
   dsm(array('publication',$publication));
 
   // find the date of this publication_issue
-  $field_items = field_get_items($entity_type, $entity, 'field_pub_issue_date');
+  $field_items = field_get_items('node', $node, 'field_pub_issue_date');
   $no_lang = array_pop($field_items);
   $pub_date = $no_lang['value'];
   dsm(array('pub date', "$pub_date"));
