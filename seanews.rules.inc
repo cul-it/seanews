@@ -15,7 +15,7 @@ function seanews_rules_action_info() {
     'seanews_action_node_register_expected_issue' => array(
       'label' => t('Register uploaded issue with expected issue node'),
       'arguments' => array(
-        'publication' => array('type' => 'node', 'label' => t('Publication Issue Node')),
+        'node' => array('type' => 'node', 'label' => t('Publication Issue Node')),
       ),
       'module' => 'node',
     ),
