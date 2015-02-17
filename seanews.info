@@ -4,4 +4,3 @@ description = "Tools for Southeast Asia Newspaper Archive web site"
 package = Cornell University Library
 core = 7.x
 dependencies[] = transliteration
-dependencies[] = date_repeat_entitiy
