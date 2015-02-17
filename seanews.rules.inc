@@ -20,6 +20,7 @@ function seanews_rules_action_info() {
       ),
     'seanews_action_node_lookup_issue' => array(
       'label' => t('Find uploaded issue for an expected issue node'),
+      'label' => t('Find publication issue for an expected issue node'),
       'group' => t('Custom'),
       'parameter' => array(
         'node' => array('type' => 'node', 'label' => t('Expected Issue Node')),
