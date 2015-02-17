@@ -112,24 +112,23 @@ function computed_field_field_expected_issue_lookup_compute(&$entity_field, $ent
  * Find any expected issue for this publication and date - register the publication node
  * after a publication issue is being saved/updated we find the corresponding
  * expected_issue and put the nid of the publication in a computed field
+ * see seanews.rules.inc
  * @param  node $node publication node
  * @return node       unmodified publication node
  */
 function seanews_action_node_register_expected_issue($node) {
-  dsm($node);
 
   // find the publication of this publication_issue
   $field_items = field_get_items('node', $node, 'field_pub_issue_pub');
   $no_lang = array_pop($field_items);
   $publication= array_pop($no_lang);
-  dsm(array('publication',$publication));
+  //dsm(array('publication',$publication));
 
   // find the date of this publication_issue
   $field_items = field_get_items('node', $node, 'field_pub_issue_date');
   $no_lang = array_pop($field_items);
   $pub_date = $no_lang['value'];
-  //list($pub_date,$pub_time) = explode(' ', $pub_date_time);
-  dsm(array('pub date', "$pub_date"));
+  //dsm(array('pub date', "$pub_date"));
 
   // lookup expected_issues that match this publisher and date
   $query = new EntityFieldQuery();
@@ -143,7 +142,16 @@ function seanews_action_node_register_expected_issue($node) {
     ->addMetaData('account', user_load(1)); // Run the query as user 1.
 
   $result = $query->execute();
-  dsm($result);
+  if (isset($result['node'])) {
+    $expected_nids = array_keys($result['node']);
+    foreach ($expected_nids as $nid) {
+      $expected = node_load($nid);
+      // set up the node reference from expected_issue to publication_issue
+      $expected->field_expected_issue_reference[$expected->language][0]['target_id'] = $node->nid;
+      $expected->field_expected_issue_reference[$expected->language][0]['target_type'] = "node";
+      node_save($expected);
+    }
+  }
 
   return array('node' => $node);
 }
