@@ -177,7 +177,7 @@ function seanews_action_node_lookup_publication_issue($node) {
 
   if ($node->field_issue_reference[$node->language][0]['nid'] != $found_nid) {
     // update the node with the publicaton issue reference
-    $node->field_issue_reference[$node->language][0]['nid'] != $found_nid
+    $node->field_issue_reference[$node->language][0]['nid'] != $found_nid;
     if ($found_nid != 0) dsm($node);
     node_save($node);
   }
