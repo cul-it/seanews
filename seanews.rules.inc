@@ -175,13 +175,12 @@ function seanews_action_node_lookup_publication_issue($node) {
     $found_nid = 0;
   }
 
-  $node->field_issue_reference[$node->language][0]['nid'] = $found_nid;
-
-  //module_load_include('inc', 'date_repeat_entity', 'includes/date_repeat_entity.utility');
-  drupal_load('module', 'date_repeat_entity');
-
-  if ($found_nid != 0) dsm($node);
-  node_save($node);
+  if ($node->field_issue_reference[$node->language][0]['nid'] != $found_nid) {
+    // update the node with the publicaton issue reference
+    $node->field_issue_reference[$node->language][0]['nid'] != $found_nid
+    if ($found_nid != 0) dsm($node);
+    node_save($node);
+  }
 
   return array('node' => $node);
 }
