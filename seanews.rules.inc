@@ -123,7 +123,8 @@ function seanews_action_node_lookup_issue($node) {
   //module_load_include('inc', 'date_repeat_entity', 'includes/date_repeat_entity.utility');
   drupal_load('module', 'date_repeat_entity');
 
-  node_save($node);
+  dsm($node);
+  //node_save($node);
 
   return array('node' => $node);
 }
