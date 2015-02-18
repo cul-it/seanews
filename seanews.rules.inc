@@ -120,7 +120,8 @@ function seanews_action_node_lookup_issue($node) {
 
   $node->field_expected_issue_reference[$node->language][0]['nid'] = $found_nid;
 
-  module_load_include('inc', 'date_repeat_entity', 'includes/date_repeat_entity.utility');
+  //module_load_include('inc', 'date_repeat_entity', 'includes/date_repeat_entity.utility');
+  drupal_load('module', 'date_repeat_entity');
 
   node_save($node);
 
