@@ -181,7 +181,7 @@ function seanews_action_node_lookup_publication_issue($node) {
   drupal_load('module', 'date_repeat_entity');
 
   dsm($node);
-  node_save($node);
+  //node_save($node);
 
   return array('node' => $node);
 }
