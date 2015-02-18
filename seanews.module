@@ -83,7 +83,7 @@ function computed_field_field_expected_issue_lookup_compute(&$entity_field, $ent
   $expected_date = $no_lang['value'];
 
   // find the publication of the expected_issue
-  $field_items = field_get_items($entity_type, $entity, 'field_publication_reference');
+  $field_items = field_get_items($entity_type, $entity, 'field_publication_ent_reference');
   $no_lang = array_pop($field_items);
   $expected_publication= array_pop($no_lang);
 
