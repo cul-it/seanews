@@ -38,9 +38,9 @@ function seanews_rules_action_info() {
       'parameter' => array(
         'viewname' => array('type' => 'text', 'label' => t('Machine name of view')),
         'display' => array('type' => 'text', 'label' => t('Display name within view')),
-        'argument1' => array('type' => 'text', 'label' => t('View argument 1')),
-        'argument2' => array('type' => 'text', 'label' => t('View argument 2')),
-        'argument3' => array('type' => 'text', 'label' => t('View argument 3')),
+        'argument1' => array('type' => 'text', 'label' => t('View argument 1'), 'allow null' => TRUE),
+        'argument2' => array('type' => 'text', 'label' => t('View argument 2'), 'allow null' => TRUE),
+        'argument3' => array('type' => 'text', 'label' => t('View argument 3'), 'allow null' => TRUE),
       ),
     'provides' => array(
       'variable_added' => array(
@@ -208,15 +208,3 @@ function seanews_action_node_render_view_text($viewname, $display, $argument1 = 
   $output = drupal_html_to_text($views_result);
   return array('variable_added' => $output);
 }
-// /**
-//  * Info alteration callback for variable add action.
-//  */
-// function seanews_action_variable_add_info_alter(&$element_info, RulesAbstractPlugin $element) {
-//   if (isset($element->settings['type']) && $type = $element->settings['type']) {
-//     $cache = rules_get_cache();
-//     $type_info = $cache['data_info'][$type];
-//     $element_info['parameter']['value']['type'] = $type;
-//     $element_info['parameter']['value']['label'] = $type_info['label'];
-//     $element_info['provides']['variable_added']['type'] = $type;
-//   }
-// }
