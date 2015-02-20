@@ -38,9 +38,9 @@ function seanews_rules_action_info() {
       'parameter' => array(
         'viewname' => array('type' => 'text', 'label' => t('Machine name of view')),
         'display' => array('type' => 'text', 'label' => t('Display name within view')),
-        'argument1' => array('type' => 'text', 'label' => t('View argument 1'), 'allow null' => TRUE),
-        'argument2' => array('type' => 'text', 'label' => t('View argument 2'), 'allow null' => TRUE),
-        'argument3' => array('type' => 'text', 'label' => t('View argument 3'), 'allow null' => TRUE),
+        'argument1' => array('type' => 'text', 'label' => t('View argument 1'), 'optional' => TRUE),
+        'argument2' => array('type' => 'text', 'label' => t('View argument 2'), 'optional' => TRUE),
+        'argument3' => array('type' => 'text', 'label' => t('View argument 3'), 'optional' => TRUE),
       ),
     'provides' => array(
       'variable_added' => array(
