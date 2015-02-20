@@ -12,26 +12,40 @@
  */
 function seanews_rules_action_info() {
   return array(
-    'seanews_action_node_register_expected_issue' => array(
-      'label' => t('Register uploaded issue with expected issue node - obsolete'),
+    // 'seanews_action_node_register_expected_issue' => array(
+    //   'label' => t('Register uploaded issue with expected issue node - obsolete'),
+    //   'group' => t('Custom'),
     //   'parameter' => array(
+    //     'node' => array('type' => 'node', 'label' => t('Publication Issue Node')),
+    //   ),
+    // ),
+    // 'seanews_action_node_lookup_issue' => array(
+    //   'label' => t('Find publication issue for an expected issue node - obsolete'),
+    //   'group' => t('Custom'),
+    //   'parameter' => array(
+    //     'node' => array('type' => 'node', 'label' => t('Expected Issue Node')),
+    //   ),
+    // ),
+    // 'seanews_action_node_lookup_publication_issue' => array(
+    //   'label' => t('Find publication issue for a Publication Expected Issue node'),
+    //   'group' => t('Custom'),
+    //   'parameter' => array(
+    //     'node' => array('type' => 'node', 'label' => t('Publication Expected Issue Node')),
+    //   ),
+    'seanews_action_node_render_view_text' => array(
+      'label' => t('Render the output of a view as text'),
       'group' => t('Custom'),
       'parameter' => array(
-        'node' => array('type' => 'node', 'label' => t('Publication Issue Node')),
+        'viewname' => array('type' => 'text', 'label' => t('Machine name of view')),
+        'display' => array('type' => 'text', 'label' => t('Display name within view')),
+        'argument1' => array('type' => 'text', 'label' => t('View argument 1')),
+        'argument2' => array('type' => 'text', 'label' => t('View argument 2')),
+        'argument3' => array('type' => 'text', 'label' => t('View argument 3')),
       ),
-    ),
-    'seanews_action_node_lookup_issue' => array(
-      'label' => t('Find publication issue for an expected issue node - obsolete'),
-      'group' => t('Custom'),
-      'parameter' => array(
-        'node' => array('type' => 'node', 'label' => t('Expected Issue Node')),
-      ),
-    ),
-    'seanews_action_node_lookup_publication_issue' => array(
-      'label' => t('Find publication issue for a Publication Expected Issue node'),
-      'group' => t('Custom'),
-      'parameter' => array(
-        'node' => array('type' => 'node', 'label' => t('Publication Expected Issue Node')),
+    'provides' => array(
+      'variable_added' => array(
+        'type' => 'unknown',
+        'label' => t('Added variable'),
       ),
     ),
   );
@@ -184,4 +198,12 @@ function seanews_action_node_lookup_publication_issue($node) {
   }
 
   return array('node' => $node);
+}
+
+function seanews_action_node_render_view_text($viewname, $display, $argument1 = NULL, $argument2 = NULL, $argument3 = NULL) {
+  $view = views_get_view($viewname , TRUE);
+  $arg = array($argument1, $argument2, $argument3);
+  $views_result = $view->preview($display, $arg);
+  $output = drupal_html_to_text($views_result);
+  return array('variable_added' => $output);
 }
