@@ -36,7 +36,7 @@ function seanews_rules_action_info() {
           ),
         ),
       ),
-    ),
+
   );
 }
 
