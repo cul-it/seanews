@@ -46,6 +46,7 @@ function seanews_rules_action_info() {
       'variable_added' => array(
         'type' => 'unknown',
         'label' => t('Added variable'),
+        ),
       ),
     ),
   );
