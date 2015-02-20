@@ -29,14 +29,14 @@ function seanews_rules_action_info() {
         'argument2' => array('type' => 'text', 'label' => t('View argument 2'), 'optional' => TRUE),
         'argument3' => array('type' => 'text', 'label' => t('View argument 3'), 'optional' => TRUE),
       ),
-      ),
-    'provides' => array(
-      'variable_added' => array(
-        'type' => 'text',
-        'label' => t('Added variable'),
+      'provides' => array(
+        'variable_added' => array(
+          'type' => 'text',
+          'label' => t('Added variable'),
+          ),
         ),
       ),
-
+    ),
   );
 }
 
