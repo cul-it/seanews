@@ -208,15 +208,15 @@ function seanews_action_node_render_view_text($viewname, $display, $argument1 = 
   $output = drupal_html_to_text($views_result);
   return array('variable_added' => $output);
 }
-/**
- * Info alteration callback for variable add action.
- */
-function seanews_action_variable_add_info_alter(&$element_info, RulesAbstractPlugin $element) {
-  if (isset($element->settings['type']) && $type = $element->settings['type']) {
-    $cache = rules_get_cache();
-    $type_info = $cache['data_info'][$type];
-    $element_info['parameter']['value']['type'] = $type;
-    $element_info['parameter']['value']['label'] = $type_info['label'];
-    $element_info['provides']['variable_added']['type'] = $type;
-  }
-}
+// /**
+//  * Info alteration callback for variable add action.
+//  */
+// function seanews_action_variable_add_info_alter(&$element_info, RulesAbstractPlugin $element) {
+//   if (isset($element->settings['type']) && $type = $element->settings['type']) {
+//     $cache = rules_get_cache();
+//     $type_info = $cache['data_info'][$type];
+//     $element_info['parameter']['value']['type'] = $type;
+//     $element_info['parameter']['value']['label'] = $type_info['label'];
+//     $element_info['provides']['variable_added']['type'] = $type;
+//   }
+// }
