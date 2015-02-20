@@ -17,6 +17,7 @@ function seanews_rules_action_info() {
       'group' => t('Custom'),
       'parameter' => array(
         'node' => array('type' => 'node', 'label' => t('Publication Expected Issue Node')),
+        ),
       ),
     'seanews_action_node_render_view_text' => array(
       'label' => t('Render the output of a view as text'),
@@ -28,13 +29,14 @@ function seanews_rules_action_info() {
         'argument2' => array('type' => 'text', 'label' => t('View argument 2'), 'optional' => TRUE),
         'argument3' => array('type' => 'text', 'label' => t('View argument 3'), 'optional' => TRUE),
       ),
+      ),
     'provides' => array(
       'variable_added' => array(
         'type' => 'text',
         'label' => t('Added variable'),
         ),
       ),
-    ),
+
   );
 }
 
