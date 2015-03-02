@@ -107,3 +107,26 @@ function computed_field_field_expected_issue_lookup_compute(&$entity_field, $ent
 
   $entity_field[0]['value'] = $found_nid;
 }
+
+/**
+ * Implements hook_node_presave
+ * @param  object $node objects passed by reference in php5
+ * @return object       $node can be modified
+ */
+function seanews_file_presave($node) {
+  if ($node->type == "publication_issue") {
+
+    // get issue date
+    $field_items = field_get_items('node', $node, 'field_pub_issue_date');
+    $no_lang = array_pop($field_items);
+    $issue_date = $no_lang['value'];
+
+    // get (computed) publication pathname
+    $field_items = field_get_items('node', $node, 'field_pub_issue_pub_path');
+    $no_lang = array_pop($field_items);
+    $issue_path = $no_lang['value'];
+
+    dsm(array('date' => $issue_date, 'path' => $issue_path));
+
+  }
+}
