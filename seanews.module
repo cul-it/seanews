@@ -119,14 +119,30 @@ function seanews_node_presave($node) {
     // get issue date
     $field_items = field_get_items('node', $node, 'field_pub_issue_date');
     $no_lang = array_pop($field_items);
-    $issue_date = $no_lang['value'];
+    list($issue_date, $ignore_time) = explode(' ', $no_lang['value']);
 
     // get (computed) publication pathname
     $field_items = field_get_items('node', $node, 'field_pub_issue_pub_path');
     $no_lang = array_pop($field_items);
     $issue_path = $no_lang['value'];
 
-    dsm(array('date' => $issue_date, 'path' => $issue_path, 'node' => $node));
+    // get fid of uploaded file
+    $field_items = field_get_items('node', $node, 'field_pub_issue_document');
+    $no_lang = array_pop($field_items);
+    $fid = $no_lang['fid'];
 
+    dsm(array('date' => $issue_date, 'path' => $issue_path, 'fid' => $fid, node' => $node));
+
+    // Here My assumption is that $form_state['values']['script_file_upload'] returns the fid
+    //  $file_object = file_load($form_state['values']['script_file_upload']);
+    //  $destination = 'public://abc/' ;
+    //  if(file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
+    //    $file = file_move($file_object, $destination . $file_object->filename, FILE_EXISTS_REPLACE);
+    //  }
+    //  if ($file) {
+    //      $file->status = FILE_STATUS_PERMANENT;
+    //      drupal_chmod($file->uri, 0775);
+    //      $file = file_save($file);
+    // }
   }
 }
