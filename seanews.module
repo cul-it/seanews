@@ -113,7 +113,7 @@ function computed_field_field_expected_issue_lookup_compute(&$entity_field, $ent
  * @param  object $node objects passed by reference in php5
  * @return object       $node can be modified
  */
-function seanews_file_presave($node) {
+function seanews_node_presave($node) {
   if ($node->type == "publication_issue") {
 
     // get issue date
@@ -126,7 +126,7 @@ function seanews_file_presave($node) {
     $no_lang = array_pop($field_items);
     $issue_path = $no_lang['value'];
 
-    dsm(array('date' => $issue_date, 'path' => $issue_path));
+    dsm(array('date' => $issue_date, 'path' => $issue_path, 'node' => $node));
 
   }
 }
