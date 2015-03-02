@@ -116,10 +116,19 @@ function computed_field_field_expected_issue_lookup_compute(&$entity_field, $ent
 function seanews_node_presave($node) {
   if ($node->type == "publication_issue") {
 
+    $wrapper = entity_metadata_wrapper('node', $pub);
+    $datetime = $wrapper->field_pub_issue_date->value();
+    $issue_year = date('Y', strtotime($datetime));
+    $issue_path = $wrapper->field_pub_issue_pub_path->value();
+    $file_info = $wrapper->field_pub_issue_document->value();
+    dsm($file_info);
+    returm;
+
+
     // get issue date
     $field_items = field_get_items('node', $node, 'field_pub_issue_date');
     $no_lang = array_pop($field_items);
-    list($issue_date, $ignore_time) = explode(' ', $no_lang['value']);
+    $issue_year = date('Y', strtotime($no_lang['value']));
 
     // get (computed) publication pathname
     $field_items = field_get_items('node', $node, 'field_pub_issue_pub_path');
@@ -131,18 +140,17 @@ function seanews_node_presave($node) {
     $no_lang = array_pop($field_items);
     $fid = $no_lang['fid'];
 
-    dsm(array('date' => $issue_date, 'path' => $issue_path, 'fid' => $fid, 'node' => $node));
+    dsm(array('date' => $issue_year, 'path' => $issue_path, 'fid' => $fid, 'node' => $node));
 
-    // Here My assumption is that $form_state['values']['script_file_upload'] returns the fid
-    //  $file_object = file_load($form_state['values']['script_file_upload']);
-    //  $destination = 'public://abc/' ;
-    //  if(file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
-    //    $file = file_move($file_object, $destination . $file_object->filename, FILE_EXISTS_REPLACE);
-    //  }
-    //  if ($file) {
-    //      $file->status = FILE_STATUS_PERMANENT;
-    //      drupal_chmod($file->uri, 0775);
-    //      $file = file_save($file);
-    // }
+     $file_object = file_load($fid);
+     $destination = 'private://issues/' . $issue_path . '/' . $issue_year . '/';
+     if(file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
+       $file = file_move($file_object, $destination . $file_object->filename, FILE_EXISTS_REPLACE);
+     }
+     if ($file) {
+         $file->status = FILE_STATUS_PERMANENT;
+         drupal_chmod($file->uri, 0775);
+         $file = file_save($file);
+    }
   }
 }
