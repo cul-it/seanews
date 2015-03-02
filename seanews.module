@@ -133,6 +133,7 @@ function seanews_node_presave($node) {
      $destination = 'private://issues/' . $issue_path . '/' . $issue_year . '/';
      if(file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
        $file = file_copy($file_object, $destination .  $original_name, FILE_EXISTS_RENAME);
+       dsm($file);
      }
      if ($file) {
        $file->status = FILE_STATUS_PERMANENT;
