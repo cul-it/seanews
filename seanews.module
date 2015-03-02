@@ -131,7 +131,7 @@ function seanews_node_presave($node) {
     $no_lang = array_pop($field_items);
     $fid = $no_lang['fid'];
 
-    dsm(array('date' => $issue_date, 'path' => $issue_path, 'fid' => $fid, node' => $node));
+    dsm(array('date' => $issue_date, 'path' => $issue_path, 'fid' => $fid, 'node' => $node));
 
     // Here My assumption is that $form_state['values']['script_file_upload'] returns the fid
     //  $file_object = file_load($form_state['values']['script_file_upload']);
