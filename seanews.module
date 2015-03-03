@@ -130,6 +130,7 @@ function seanews_node_presave($node) {
 
         // can't work with $wrapper->field_pub_issue_pub yet
         $field_items = field_get_items('node', $node, 'field_pub_issue_pub');
+        dsm($field_items);
         $x = array_pop($field_items);
         $pub_nid = array_pop($x);
         dsm($pub_nid);
