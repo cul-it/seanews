@@ -125,6 +125,9 @@ function seanews_node_presave($node) {
     $issue_path = $wrapper->field_pub_issue_pub_path->value();
     $file_info = $wrapper->field_pub_issue_document->value();
     $fid = $file_info['fid'];
+    dsm($wrapper->getPropertyInfo());
+    dsm($file_info);
+    return;
     $original_name = $file_info['origname'];
 
     dsm(array('date' => $issue_year, 'path' => $issue_path, 'fid' => $fid, 'original name' => $original_name, 'node' => $node));
