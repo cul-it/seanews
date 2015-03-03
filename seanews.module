@@ -108,6 +108,24 @@ function computed_field_field_expected_issue_lookup_compute(&$entity_field, $ent
   $entity_field[0]['value'] = $found_nid;
 }
 
+function seanews_get_publication_path($entity_id) {
+  $node = node_load($entity_id);
+  if ($node !== FALSE && $node->type == 'publication') {
+    $wrapper = entity_metadata_wrapper('node', $node);
+    return $wrapper->field_pub_title_r_cul_path->value();
+  }
+  return NULL;
+}
+
+function seanews_get_publication_title($entity_id) {
+  $node = node_load($entity_id);
+  if ($node !== FALSE && $node->type == 'publication') {
+    $wrapper = entity_metadata_wrapper('node', $node);
+    return $wrapper->title->value();
+  }
+  return NULL;
+}
+
 /**
  * Implements hook_node_presave
  * @param  object $node objects passed by reference in php5
