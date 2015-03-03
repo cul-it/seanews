@@ -128,7 +128,7 @@ function seanews_node_presave($node) {
         // saving issue for the first time
         dsm("No nid!");
 
-        $pub = $wrapper->field_pub_issue_pub->value();
+        $pub = $wrapper->field_pub_issue_pub;
         dsm($pub);
         return;
 
