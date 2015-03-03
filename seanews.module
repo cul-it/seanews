@@ -108,16 +108,6 @@ function computed_field_field_expected_issue_lookup_compute(&$entity_field, $ent
   $entity_field[0]['value'] = $found_nid;
 }
 
-function seanews_get_publication_path($entity_id) {
-  $wrapper = entity_metadata_wrapper('node', $entity_id);
-  return $wrapper->field_pub_title_r_cul_path->value();
-}
-
-function seanews_get_publication_title($entity_id) {
-  $wrapper = entity_metadata_wrapper('node', $entity_id);
-  return $wrapper->title->value();
-}
-
 /**
  * Implements hook_node_presave
  * @param  object $node objects passed by reference in php5
