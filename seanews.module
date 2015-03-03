@@ -118,34 +118,45 @@ function computed_field_field_expected_issue_lookup_compute(&$entity_field, $ent
  */
 function seanews_node_presave($node) {
   if ($node->type == "publication_issue") {
+    try {
+      $wrapper = entity_metadata_wrapper('node', $node);
+      $issue_datetime = $wrapper->field_pub_issue_date->value();
+      $issue_year = format_date($issue_datetime, 'custom', 'Y');
+      $issue_path = $wrapper->field_pub_issue_pub_path->value();
+      $file_info = $wrapper->field_pub_issue_document->value();
+      $nid = $wrapper->nid->value();
+      if (empty($nid)) {
+        dsm("No nid!");
+      }
+      $fid = $file_info['fid'];
+      $file = $wrapper->field_pub_issue_document->file->value();
+      dsm($nid);
+      dsm($file);
+      dsm($wrapper->getPropertyInfo());
+      dsm($file_info);
+      $original_name = $file_info['filename'];
 
-    $wrapper = entity_metadata_wrapper('node', $node);
-    $issue_datetime = $wrapper->field_pub_issue_date->value();
-    $issue_year = format_date($issue_datetime, 'custom', 'Y');
-    $issue_path = $wrapper->field_pub_issue_pub_path->value();
-    $file_info = $wrapper->field_pub_issue_document->value();
-    $nid = $wrapper->nid->value();
-    $fid = $file_info['fid'];
-    $file = $wrapper->field_pub_issue_document->file->value();
-    dsm($nid);
-    dsm($file);
-    dsm($wrapper->getPropertyInfo());
-    dsm($file_info);
-    return;
-    $original_name = $file_info['origname'];
+      dsm(array('date' => $issue_year, 'path' => $issue_path, 'fid' => $fid, 'original name' => $original_name, 'node' => $node));
 
-    dsm(array('date' => $issue_year, 'path' => $issue_path, 'fid' => $fid, 'original name' => $original_name, 'node' => $node));
-
-     $file_object = file_load($fid);
-     $destination = 'private://issues/' . $issue_path . '/' . $issue_year . '/';
-     if(file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
-       $file = file_copy($file_object, $destination .  $original_name, FILE_EXISTS_RENAME);
-       dsm($file);
-     }
-     if ($file) {
-       $file->status = FILE_STATUS_PERMANENT;
-       drupal_chmod($file->uri, 0775);
-       $file = file_save($file);
+       $file_object = file_load($fid);
+       $destination = 'private://issues/' . $issue_path . '/' . $issue_year . '/';
+       if(file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
+         $file = file_copy($file_object, $destination .  $original_name, FILE_EXISTS_RENAME);
+         dsm($file);
+       }
+       if ($file) {
+         $file->status = FILE_STATUS_PERMANENT;
+         drupal_chmod($file->uri, 0775);
+         $file = file_save($file);
+         $wrapper->field_pub_issue_document->file->set($file);
+      }
+    }
+    catch (EntityMetadataWrapperException $exc) {
+        watchdog(
+          'seanews',
+          'See '  . __FUNCTION__ . '() <pre>' .  $exc->getTraceAsString() . '</pre>',
+           NULL, WATCHDOG_ERROR
+        );
     }
   }
 }
