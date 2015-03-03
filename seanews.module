@@ -124,7 +124,7 @@ function seanews_node_presave($node) {
       $issue_year = format_date($issue_datetime, 'custom', 'Y');
       dsm($wrapper->getPropertyInfo());
       $pub_path = $wrapper->field_pub_issue_pub->field_pub_title_r_cul_path->value();
-      $pub_title = 'test'; //$wrapper->field_pub_issue_pub->field_pub_title_r_cul->value();
+      $pub_title = $wrapper->field_pub_issue_pub->field_pub_title_r_cul->value();
       dsm(array('title is' => $pub_title, 'path' => $pub_path));
       $nid = $wrapper->nid->value();
       if (empty($nid)) {
