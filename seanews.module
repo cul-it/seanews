@@ -149,7 +149,9 @@ function seanews_node_presave($node) {
         dsm("No nid!");
 
         // set the title
-        $wrapper->title->set(t('@publication @year', array('@publication' => $issue_path, '@year' => $issue_year)));
+        $issue_date = format_date($issue_datetime, 'custom', 'Y-m-d');
+        $title = seanews_get_publication_title($publication_nid);
+        $wrapper->title->set(t('@publication @year', array('@publication' => $title, '@year' => $issue_date)));
 
       }
       $fid = $file_info['fid'];
