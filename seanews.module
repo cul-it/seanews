@@ -128,15 +128,15 @@ function seanews_node_presave($node) {
         // saving issue for the first time
         dsm("No nid!");
 
+        $pub = $wrapper->field_pub_issue_pub->value();
+        dsm($pub);
+        return;
+
         // set the title
         $issue_date = format_date($issue_datetime, 'custom', 'Y-m-d');
         //$title = seanews_get_publication_title($publication_nid);
         $title = $wrapper->field_pub_issue_pub->title->value();
         $wrapper->title->set(t('@publication @year', array('@publication' => $pub_title, '@year' => $issue_date)));
-
-        $pub = $wrapper->field_pub_issue_pub->value();
-        dsm($pub);
-        return;
       }
       else {
         $pub_path = $wrapper->field_pub_issue_pub->field_pub_title_r_cul_path->value();
