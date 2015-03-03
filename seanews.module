@@ -132,8 +132,9 @@ function seanews_node_presave($node) {
       $wrapper = entity_metadata_wrapper('node', $node);
       $issue_datetime = $wrapper->field_pub_issue_date->value();
       $issue_year = format_date($issue_datetime, 'custom', 'Y');
-      $pub_title = $wrapper->field_pub_issue_pub->title->value();
-      dsm(array('title is' => $pub_title));
+      $pub_title = $wrapper->field_pub_issue_pub->field_pub_title_r_cul->value();
+      $pub_path = $wrapper->field_pub_issue_pub->field_pub_title_r_cul_path->value();
+      dsm(array('title is' => $pub_title, 'path' => $pub_path));
       return;
 
       $publication_nid = $wrapper->field_pub_issue_pub->nid->value();
