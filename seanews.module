@@ -140,6 +140,7 @@ function seanews_node_presave($node) {
       }
       $file = $wrapper->field_pub_issue_document->file->value();
       dsm($file);
+      return;
       $fid = $file['fid'];
       $original_name = $file['filename'];
 
