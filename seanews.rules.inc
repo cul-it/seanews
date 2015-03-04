@@ -154,7 +154,9 @@ function seanews_action_node_save_publication_issue_title($node) {
   try {
     $wrapper = entity_metadata_wrapper('node', $node);
     dsm($wrapper->getPropertyInfo());
-
+    $old_title = $wrapper->title->value();
+    dsm($old_title);
+    $wrapper->title->set('Testing Title');
   }
   catch (EntityMetadataWrapperException $exc) {
       watchdog(
