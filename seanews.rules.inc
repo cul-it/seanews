@@ -150,5 +150,17 @@ function seanews_action_node_save_publication_issue_move_file($node) {
  * @return [type] [description]
  */
 function seanews_action_node_save_publication_issue_title($node) {
-  dsm('seanews_action_node_save_publication_issue_title', $node);
+  dsm('seanews_action_node_save_publication_issue_title');
+  try {
+    $wrapper = entity_metadata_wrapper('node', $node);
+    dsm($wrapper->getPropertyInfo());
+
+  }
+  catch (EntityMetadataWrapperException $exc) {
+      watchdog(
+        'seanews',
+        'See '  . __FUNCTION__ . '() <pre>' .  $exc->getTraceAsString() . '</pre>',
+         NULL, WATCHDOG_ERROR
+      );
+  }
 }
