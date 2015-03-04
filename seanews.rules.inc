@@ -141,11 +141,11 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     dsm(array($issue_year,$pub_path));
     $file = $wrapper->field_pub_issue_document->file->value();
     $fid = $wrapper->field_pub_issue_document->file->fid->value();
-    $original_name = $file->filename; //$wrapper->field_pub_issue_document->file->filename->value();
+    $original_name = $file->filename;
     dsm(array($file,$fid,$original_name));
     $destination = 'private://issues/' . $pub_path . '/' . $issue_year . '/';
     if(file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
-      $new_file = file_copy($file_object, $destination .  $original_name, FILE_EXISTS_RENAME);
+      $new_file = file_copy($file, $destination .  $original_name, FILE_EXISTS_RENAME);
       if ($new_file) {
          $new_file->status = FILE_STATUS_PERMANENT;
          drupal_chmod($new_file->uri, 0775);
