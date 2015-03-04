@@ -118,7 +118,8 @@ function computed_field_field_expected_issue_lookup_compute(&$entity_field, $ent
  */
 function seanews_node_presave($node) {
   if ($node->type == "publication_issue") {
-    dsm($node);
+    dsm(array('seanews_node_presave', $node);
+    return;
     try {
       $wrapper = entity_metadata_wrapper('node', $node);
       $issue_datetime = $wrapper->field_pub_issue_date->value();
@@ -179,10 +180,5 @@ function seanews_node_presave($node) {
         );
     }
   }
-}
-
-function seanews_form_alter(&$form, &$form_state, $form_id) {
-  dsm($form_id);  // print form ID to messages
-  dsm($form);  // pretty print array using Krumo to messages
 }
 
