@@ -5,4 +5,3 @@ package = Cornell University Library
 core = 7.x
 dependencies[] = transliteration
 dependencies[] = date_repeat_entity
-dependencies[] = hook_post_action

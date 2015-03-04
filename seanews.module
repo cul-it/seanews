@@ -205,35 +205,3 @@ function seanews_move_uploaded_issue($pub_path, $issue_year, $file_id) {
   }
 
 }
-
-/**
- * Gets called after a node has been inserted to database.
- *
- * @param $node
- *   A node object
- *
- * @see hook_node_postsave()
- * @see hook_node_postupdate()
- * @see hook_node_postdelete()
- * @ingroup node_api_hooks
- */
-function seanews_node_postinsert($node) {
-  dsm(array('seanews_node_postinsert', $node));
-  watchdog('hook_post_action_test', "The inserted node {$node->type} id is {$node->nid} from " . __FUNCTION__);
-}
-
-/**
- * Gets called after a node has been updated to database.
- *
- * @param $node
- *   A node object
- *
- * @see hook_node_postsave()
- * @see hook_node_postinsert()
- * @see hook_node_postdelete()
- * @ingroup node_api_hooks
- */
-function seanews_node_postupdate($node) {
-  dsm(array('seanews_node_postupdate', $node));
-  watchdog('hook_post_action_test', "The updated node {$node->type} id is {$node->nid} from " . __FUNCTION__);
-}
