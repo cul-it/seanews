@@ -42,6 +42,16 @@ function seanews_rules_action_info() {
           ),
         ),
       );
+  $actions[] = 'seanews_action_node_save_publication_issue_title' => array(
+      'label' => t('Correct node title to Publication YYYY-MM-DD.'),
+      'group' => t('Custom'),
+      'parameter' => array(
+        'node' => array(
+          'type' => 'node',
+          'label' => t('Publication Issue Node'),
+          ),
+        ),
+      );
   $actions[] = 'seanews_action_node_render_view_text' => array(
       'label' => t('Render the output of a view as text'),
       'group' => t('Custom'),
@@ -116,4 +126,30 @@ function seanews_action_node_render_view_text($viewname, $display, $argument1 = 
   $views_result = $view->preview($display, $arg);
   $output = drupal_html_to_text($views_result);
   return array('variable_added' => $output);
+}
+
+/**
+ * connect expected issue to recently uploaded publication issue
+ * @param  object $node publication issue node
+ */
+function seanews_action_node_save_publication_issue_update_expected($node) {
+ dsm('seanews_action_node_save_publication_issue_update_expected');
+}
+
+/**
+ * move uploaded issue file to private://<publication>/<year>/foo.ext
+ * @param  object $node publication issue node
+ * @return [type] [description]
+ */
+function seanews_action_node_save_publication_issue_move_file($node) {
+  dsm('seanews_action_node_save_publication_issue_move_file');
+}
+
+/**
+ * make publication issue title into <Publication> YYY-MM-DD
+ * @param  object $node publication issue node
+ * @return [type] [description]
+ */
+function seanews_action_node_save_publication_issue_title($node) {
+  dsm('seanews_action_node_save_publication_issue_title');
 }
