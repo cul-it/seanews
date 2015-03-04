@@ -135,9 +135,10 @@ function seanews_action_node_save_publication_issue_move_file($node) {
   try {
     $wrapper = entity_metadata_wrapper('node', $node);
     dsm($wrapper->getPropertyInfo());
-    $old_title = $wrapper->title->value();
-    dsm($old_title);
-    $wrapper->title->set('Testing Title');
+    $issue_datetime = $wrapper->field_pub_issue_date->value();
+    $issue_year = format_date($issue_datetime, 'custom', 'Y');
+    $pub_path = $wrapper->field_pub_issue_pub->field_pub_title_r_cul_path->value();
+    dsm(array($issue_year,$pub_path));
   }
   catch (EntityMetadataWrapperException $exc) {
       watchdog(
