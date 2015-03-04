@@ -141,7 +141,7 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     dsm(array($issue_year,$pub_path));
     $file = $wrapper->field_pub_issue_document->file->value();
     $fid = $wrapper->field_pub_issue_document->file->fid->value();
-    $original_name = ''; //$wrapper->field_pub_issue_document->file->filename->value();
+    $original_name = $file->filename; //$wrapper->field_pub_issue_document->file->filename->value();
     dsm(array($file,$fid,$original_name));
   }
   catch (EntityMetadataWrapperException $exc) {
