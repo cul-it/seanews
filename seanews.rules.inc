@@ -165,4 +165,5 @@ function seanews_action_node_save_publication_issue_title($node) {
          NULL, WATCHDOG_ERROR
       );
   }
+  return array('node' => $node);
 }
