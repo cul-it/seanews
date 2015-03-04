@@ -145,7 +145,8 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     dsm(array($file,$fid,$original_name));
     $destination = 'private://issues/' . $pub_path . '/' . $issue_year . '/';
     dsm($destination);
-    if(file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
+    if (file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
+      dsm($destination);
       $new_file = file_copy($file, $destination .  $original_name, FILE_EXISTS_RENAME);
       if ($new_file) {
          $new_file->status = FILE_STATUS_PERMANENT;
@@ -156,7 +157,12 @@ function seanews_action_node_save_publication_issue_move_file($node) {
       }
      dsm($new_file);
     }
-    else dsm('file_prepare_directory failed');
+    else {
+      dsm(array('file_prepare_directory failed', $destination));
+      if (file_stream_wrapper_valid_scheme(file_uri_scheme($destination))) dsm('valid scheme');
+       $real_path = drupal_realpath($destination);
+       dsm($real_path);
+    }
   }
   catch (EntityMetadataWrapperException $exc) {
       watchdog(
