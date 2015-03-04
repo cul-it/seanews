@@ -11,15 +11,38 @@
  * @ingroup rules
  */
 function seanews_rules_action_info() {
-  return array(
-    'seanews_action_node_lookup_publication_issue' => array(
+  $actions = array();
+  $actions[] = 'seanews_action_node_lookup_publication_issue' => array(
       'label' => t('Find publication issue for a Publication Expected Issue node'),
       'group' => t('Custom'),
       'parameter' => array(
-        'node' => array('type' => 'node', 'label' => t('Publication Expected Issue Node')),
+        'node' => array(
+          'type' => 'node',
+          'label' => t('Publication Expected Issue Node'),
+          ),
         ),
-      ),
-    'seanews_action_node_render_view_text' => array(
+      );
+  $actions[] = 'seanews_action_node_save_publication_issue_update_expected' => array(
+      'label' => t('Update corresponding expected issue'),
+      'group' => t('Custom'),
+      'parameter' => array(
+        'node' => array(
+          'type' => 'node',
+          'label' => t('Publication Issue Node'),
+          ),
+        ),
+      );
+  $actions[] = 'seanews_action_node_save_publication_issue_move_file' => array(
+      'label' => t('Move the uploaded file into publisher/year private directory.'),
+      'group' => t('Custom'),
+      'parameter' => array(
+        'node' => array(
+          'type' => 'node',
+          'label' => t('Publication Issue Node'),
+          ),
+        ),
+      );
+  $actions[] = 'seanews_action_node_render_view_text' => array(
       'label' => t('Render the output of a view as text'),
       'group' => t('Custom'),
       'parameter' => array(
@@ -35,9 +58,8 @@ function seanews_rules_action_info() {
           'label' => t('Added variable'),
           ),
         ),
-      ),
-
-  );
+      );
+  return $actions;
 }
 
 /**
