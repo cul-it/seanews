@@ -145,7 +145,7 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     dsm(array($file,$fid,$original_name));
     $destination = 'private://issues/' . $pub_path . '/' . $issue_year . '/';
     dsm($destination);
-    if (seanews_file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
+    if (seanews_file_prepare_directory($destination, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
       dsm($destination);
       $new_file = file_copy($file, $destination .  $original_name, FILE_EXISTS_RENAME);
       if ($new_file) {
