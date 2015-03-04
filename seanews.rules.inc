@@ -150,5 +150,5 @@ function seanews_action_node_save_publication_issue_move_file($node) {
  * @return [type] [description]
  */
 function seanews_action_node_save_publication_issue_title($node) {
-  dsm('seanews_action_node_save_publication_issue_title');
+  dsm('seanews_action_node_save_publication_issue_title', $node);
 }
