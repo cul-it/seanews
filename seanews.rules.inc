@@ -145,7 +145,7 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     dsm(array($file,$fid,$original_name));
     $destination = 'private://issues/' . $pub_path . '/' . $issue_year . '/';
     dsm($destination);
-    if (file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
+    if (seanews_file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
       dsm($destination);
       $new_file = file_copy($file, $destination .  $original_name, FILE_EXISTS_RENAME);
       if ($new_file) {
@@ -172,4 +172,35 @@ function seanews_action_node_save_publication_issue_move_file($node) {
       );
   }
   return array('node' => $node);
+}
+
+function seanews_file_prepare_directory(&$directory, $options = FILE_MODIFY_PERMISSIONS) {
+  $real_path = $directory;
+  if (!file_stream_wrapper_valid_scheme(file_uri_scheme($directory))) {
+    // Only trim if we're not dealing with a stream.
+    $directory = rtrim($directory, '/\\');
+  } else {
+    $real_path = drupal_realpath($directory);
+  }
+
+  // Check if directory exists.
+  if (!is_dir($real_path)) {
+    // Let mkdir() recursively create directories and use the default directory
+    // permissions.
+    if (($options & FILE_CREATE_DIRECTORY) && @drupal_mkdir($directory, NULL, TRUE)) {
+      dsm('exit 1');
+      return drupal_chmod($directory);
+    }
+    dsm('fail 1');
+    return FALSE;
+  }
+  // The directory exists, so check to see if it is writable.
+  $writable = is_writable($directory);
+  if (!$writable && ($options & FILE_MODIFY_PERMISSIONS)) {
+    dsm('exit 2');
+    return drupal_chmod($directory);
+  }
+
+  dsm('exit 3');
+  return $writable;
 }
