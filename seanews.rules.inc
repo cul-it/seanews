@@ -145,8 +145,7 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     dsm(array($file,$fid,$original_name));
     $destination = 'private://issues/' . $pub_path . '/' . $issue_year . '/';
     dsm($destination);
-    $destination = drupal_realpath($destination); //The use of drupal_realpath() is discouraged, because it does not work for remote URIs. Except in rare cases, URIs should not be manually resolved.
-    if (seanews_file_prepare_directory($destination, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
+    if (seanews_file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
       dsm($destination);
       $new_file = file_copy($file, $destination .  $original_name, FILE_EXISTS_RENAME);
       if ($new_file) {
