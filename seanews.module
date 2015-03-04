@@ -118,6 +118,7 @@ function computed_field_field_expected_issue_lookup_compute(&$entity_field, $ent
  */
 function seanews_node_presave($node) {
   if ($node->type == "publication_issue") {
+    dsm($node);
     try {
       $wrapper = entity_metadata_wrapper('node', $node);
       $issue_datetime = $wrapper->field_pub_issue_date->value();
@@ -130,7 +131,6 @@ function seanews_node_presave($node) {
 
         // can't work with $wrapper->field_pub_issue_pub yet
         $field_items = field_get_items('node', $node, 'field_pub_issue_pub');
-        dsm($node);
         $x = array_pop($field_items);
         $pub_nid = array_pop($x);
         dsm($pub_nid);
