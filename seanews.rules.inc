@@ -197,7 +197,7 @@ function seanews_file_prepare_directory(&$directory, $options = FILE_MODIFY_PERM
   // The directory exists, so check to see if it is writable.
   $writable = is_writable($directory);
   if (!$writable && ($options & FILE_MODIFY_PERMISSIONS)) {
-    dsm('exit 2');
+    dsm(array('exit 2',$directory,drupal_chmod($directory));
     return drupal_chmod($directory);
   }
 
