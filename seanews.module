@@ -115,10 +115,13 @@ function computed_field_field_expected_issue_lookup_compute(&$entity_field, $ent
  *
  * move uploaded issue files into
  * private://issues/<newspaper>/<year>/original_file_name.pdf
+ *
+ * prepopulate module sets it's weight to 10 in prepopulate.install so
+ * this code is called BEFORE field_pub_issue_pub has useful values
  */
 function seanews_node_presave($node) {
   if ($node->type == "publication_issue") {
-    dsm(array('seanews_node_presave', $node));
+    dsm('seanews_node_presave');
     return;
     try {
       $wrapper = entity_metadata_wrapper('node', $node);
