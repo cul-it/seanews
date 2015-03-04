@@ -182,3 +182,26 @@ function seanews_node_presave($node) {
   }
 }
 
+function seanews_move_uploaded_issue($pub_path, $issue_year, $file_id) {
+  dsm(array('seanews_move_uploaded_issue', $pub_path, $issue_year, $file_id));
+  $file_object = file_load($file_id);
+  dsm($file_object);
+  return;
+
+  //find original file name
+  $original_name = '';
+
+  // if original is in correct destination do not move it
+  $destination = 'private://issues/' . $pub_path . '/' . $issue_year . '/';
+  if(file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
+    $new_file = file_copy($file_object, $destination .  $original_name, FILE_EXISTS_RENAME);
+   dsm($new_file);
+  }
+  if ($new_file) {
+   $new_file->status = FILE_STATUS_PERMANENT;
+   drupal_chmod($new_file->uri, 0775);
+   $new_file = file_save($file);
+   $wrapper->field_pub_issue_document->file->set($new_file);
+  }
+
+}
