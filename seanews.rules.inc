@@ -146,7 +146,7 @@ function seanews_action_node_save_publication_issue_move_file($node) {
 
     // create directories in path one by one to set correct permissions
     $path_steps = array('issues', $pub_path, $issue_year);
-    $destination = 'private://'
+    $destination = 'private://';
     foreach ($path_steps as $dir) {
       $destination .= $dir . '/';
       if (!seanews_file_prepare_directory($destination, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
