@@ -181,12 +181,6 @@ function seanews_action_node_save_publication_issue_move_file($node) {
  *                FALSE if it fails
  */
 function seanews_create_directory_path($dir_array) {
-  $drupal_group = variable_get('seanews_drupal_group_owner', 'apachegir');
-  $user = get_current_user();
-  $groupInfo = posix_getgrgid(posix_getgid());
-  $group = $groupInfo['name'];
-  dsm(t('user @u, group @g', array('@u' => $user, '@g' => $group)));
-
   // create directories in path one by one to set correct permissions & ownership
   $destination = 'private://';
   foreach ($dir_array as $dir) {
@@ -194,10 +188,6 @@ function seanews_create_directory_path($dir_array) {
     $real_path = drupal_realpath($destination);
     if (!file_exists($real_path) && !@drupal_mkdir($real_path, NULL, TRUE)) {
       dsm("drupal_mkdir failed $real_path");
-      return FALSE;
-    }
-    if (!chgrp($real_path, $drupal_group)) {
-      dsm("can't chgrp $real_path");
       return FALSE;
     }
   }
