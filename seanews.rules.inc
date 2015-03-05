@@ -184,7 +184,7 @@ function seanews_create_directory_path($dir_array) {
   $destination = 'private://';
   foreach ($dir_array as $dir) {
     $destination .= $dir . '/';
-    if (false) {
+    if (true) {
       $real_path = drupal_realpath($destination);
       if (!file_exists($real_path) && !@drupal_mkdir($real_path, NULL, TRUE)) {
         dsm("drupal_mkdir failed $real_path");
