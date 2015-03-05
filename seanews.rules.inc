@@ -144,20 +144,12 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     $original_name = $file->filename;
     dsm(array($file,$fid,$original_name));
 
-    // create directories in path one by one to set correct permissions & ownership
+    // create directories in path one by one to set correct permissions & group ownership
     $path_steps = array('issues', $pub_path, $issue_year);
-    $destination = 'private://';
-    $drupal_group = 'apachegir';
-    foreach ($path_steps as $dir) {
-      $destination .= $dir . '/';
-      if (!seanews_file_prepare_directory($destination, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
-        drupal_set_message(t('seanews can\'t create path'), 'error', FALSE);
-        throw new Exception("Unable to create path", 1);
-      }
+    if (($destination = seanews_create_directory_path($path_steps)) === FALSE) {
+      throw new Exception("Unable to create path", 1);
     }
-
-    dsm($destination);
-    if (seanews_file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
+    else {
       dsm($destination);
       $new_file = file_copy($file, $destination .  $original_name, FILE_EXISTS_RENAME);
       if ($new_file) {
@@ -166,14 +158,8 @@ function seanews_action_node_save_publication_issue_move_file($node) {
          $new_file = file_save($new_file);
          dsm('file saved');
          $wrapper->field_pub_issue_document->file->set($new_file);
+         dsm('file updated in wrapper');
       }
-     dsm($new_file);
-    }
-    else {
-      dsm(array('file_prepare_directory failed', $destination));
-      if (file_stream_wrapper_valid_scheme(file_uri_scheme($destination))) dsm('valid scheme');
-       $real_path = drupal_realpath($destination);
-       dsm($real_path);
     }
   }
   catch (EntityMetadataWrapperException $exc) {
