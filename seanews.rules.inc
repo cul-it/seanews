@@ -144,9 +144,10 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     $original_name = $file->filename;
     dsm(array($file,$fid,$original_name));
 
-    // create directories in path one by one to set correct permissions
+    // create directories in path one by one to set correct permissions & ownership
     $path_steps = array('issues', $pub_path, $issue_year);
     $destination = 'private://';
+    $drupal_group = 'apachegir';
     foreach ($path_steps as $dir) {
       $destination .= $dir . '/';
       if (!seanews_file_prepare_directory($destination, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
@@ -183,6 +184,36 @@ function seanews_action_node_save_publication_issue_move_file($node) {
       );
   }
   return array('node' => $node);
+}
+
+/**
+ * create, permission, and owner all the directories in the given path
+ * @param  array $dir_array folders in path
+ *                                eg. array('issues', 'sun-times', '2014')
+ * @return string            path in private files directory
+ *                                eg. private://issues/sun-times/2014/
+ */
+function seanews_create_directory_path($dir_array) {
+  $drupal_group = variable_get('seanews_drupal_group_owner', 'apachegir');
+
+  // create directories in path one by one to set correct permissions & ownership
+  $destination = 'private://';
+  foreach ($dir_array as $dir) {
+    $destination .= $dir . '/';
+    $real_path = drupal_realpath($destination);
+    if (drupal_mkdir($real_path) && chgrp($real_path, $drupal_group) {
+      dsm("made path to $destination");
+    }
+    else {
+      dsm("Can't make path to $destination");
+      return FALSE;
+    }
+  }
+
+  if (!seanews_file_prepare_directory($destination, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
+    drupal_set_message(t('seanews can\'t create path'), 'error', FALSE);
+    throw new Exception("Unable to create path", 1);
+  }
 }
 
 function seanews_file_prepare_directory(&$directory, $options = FILE_MODIFY_PERMISSIONS) {
