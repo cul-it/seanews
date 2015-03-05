@@ -159,6 +159,9 @@ function seanews_action_node_save_publication_issue_move_file($node) {
          $wrapper->field_pub_issue_document->file->set($new_file);
          dsm('file updated in wrapper');
       }
+      else {
+        dsm('no new_file');
+      }
     }
   }
   catch (EntityMetadataWrapperException $exc) {
@@ -185,8 +188,8 @@ function seanews_create_directory_path($dir_array) {
   foreach ($dir_array as $dir) {
     $destination .= $dir . '/';
     $real_path = drupal_realpath($destination);
-    if (!file_exists($real_path) && !@drupal_mkdir($real_path, NULL, TRUE)) {
-      dsm("drupal_mkdir failed $real_path");
+    if (!file_exists($real_path) && !@mkdir($real_path)) {
+      dsm("mkdir failed $real_path");
       return FALSE;
     }
     if (!is_writable($destination)) {
@@ -197,7 +200,7 @@ function seanews_create_directory_path($dir_array) {
     }
   }
 
-  $ignore_not_writable = seanews_file_prepare_directory($destination, FILE_CREATE_DIRECTORY);
+  //$ignore_not_writable = seanews_file_prepare_directory($destination, FILE_CREATE_DIRECTORY);
 
   return $destination;
 }
