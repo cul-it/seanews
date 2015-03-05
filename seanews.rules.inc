@@ -178,6 +178,7 @@ function seanews_action_node_save_publication_issue_move_file($node) {
  *                                eg. array('issues', 'sun-times', '2014')
  * @return string            path in private files directory
  *                                eg. private://issues/sun-times/2014/
+ *                FALSE if it fails
  */
 function seanews_create_directory_path($dir_array) {
   $drupal_group = variable_get('seanews_drupal_group_owner', 'apachegir');
@@ -187,7 +188,7 @@ function seanews_create_directory_path($dir_array) {
   foreach ($dir_array as $dir) {
     $destination .= $dir . '/';
     $real_path = drupal_realpath($destination);
-    if (drupal_mkdir($real_path) && chgrp($real_path, $drupal_group) {
+    if (drupal_mkdir($real_path) && chgrp($real_path, $drupal_group)) {
       dsm("made path to $destination");
     }
     else {
