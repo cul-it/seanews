@@ -190,6 +190,10 @@ function seanews_create_directory_path($dir_array) {
         dsm("drupal_mkdir failed $real_path");
         return FALSE;
       }
+      if (!is_writable($real_path)) {
+        dsm("Not writable: $real_path");
+        return FALSE;
+      }
     }
     else {
       if (!seanews_file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
