@@ -143,7 +143,18 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     $fid = $wrapper->field_pub_issue_document->file->fid->value();
     $original_name = $file->filename;
     dsm(array($file,$fid,$original_name));
-    $destination = 'private://issues/' . $pub_path . '/' . $issue_year . '/';
+
+    // create directories in path one by one to set correct permissions
+    $path_steps = array('issues', $pub_path, $issue_year);
+    $destination = 'private://'
+    foreach ($path_steps as $dir) {
+      $destination .= $dir . '/';
+      if (!seanews_file_prepare_directory($destination, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
+        drupal_set_message(t('seanews can\'t create path'), 'error', FALSE);
+        throw new Exception("Unable to create path", 1);
+      }
+    }
+
     dsm($destination);
     if (seanews_file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
       dsm($destination);
