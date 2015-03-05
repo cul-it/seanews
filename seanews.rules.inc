@@ -188,11 +188,12 @@ function seanews_create_directory_path($dir_array) {
   foreach ($dir_array as $dir) {
     $destination .= $dir . '/';
     $real_path = drupal_realpath($destination);
-    if (@drupal_mkdir($real_path) && chgrp($real_path, $drupal_group)) {
-      dsm("made path to $destination");
+    if (!@drupal_mkdir($real_path)) {
+      dsm("drupal_mkdir failed $real_path");
+      return FALSE;
     }
-    else {
-      dsm("Can't make path to $destination");
+    if (!chgrp($real_path, $drupal_group)) {
+      dsm("can't chgrp $destination");
       return FALSE;
     }
   }
