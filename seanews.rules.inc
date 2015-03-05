@@ -145,7 +145,7 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     dsm(array($file,$fid,$original_name));
 
     // create directories in path one by one to set correct permissions & group ownership
-    $path_steps = array('tmp3', $pub_path, $issue_year);
+    $path_steps = array('issues', $pub_path, $issue_year);
     if (($destination = seanews_create_directory_path($path_steps)) === FALSE) {
       throw new Exception("Unable to create path", 1);
     }
