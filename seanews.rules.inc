@@ -184,29 +184,22 @@ function seanews_create_directory_path($dir_array) {
   $destination = 'private://';
   foreach ($dir_array as $dir) {
     $destination .= $dir . '/';
-    if (true) {
-      $real_path = drupal_realpath($destination);
-      if (!file_exists($real_path) && !@drupal_mkdir($real_path, NULL, TRUE)) {
-        dsm("drupal_mkdir failed $real_path");
-        return FALSE;
-      }
-      if (!is_writable($destination)) {
-        dsm("destination Not writable: $destination");
-        return FALSE;
-      }
-      if (!is_writable($real_path)) {
-        dsm("real_path Not writable: $real_path");
-        return FALSE;
-      }
+    $real_path = drupal_realpath($destination);
+    if (!file_exists($real_path) && !@drupal_mkdir($real_path, NULL, TRUE)) {
+      dsm("drupal_mkdir failed $real_path");
+      return FALSE;
     }
-    else {
-      if (!seanews_file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
-        drupal_set_message(t('seanews can\'t create path @d', array('@d' => $destination)), 'error', FALSE);
-        throw new Exception("Unable to create path", 1);
-      }
+    if (!is_writable($destination)) {
+      dsm("destination Not writable: $destination");
+    }
+    if (!is_writable($real_path)) {
+      dsm("real_path Not writable: $real_path");
     }
   }
-  return TRUE;
+
+  $ignore_not_writable = seanews_file_prepare_directory($destination, FILE_CREATE_DIRECTORY);
+
+  return $destination;
 }
 
 function seanews_file_prepare_directory(&$directory, $options = FILE_MODIFY_PERMISSIONS) {
