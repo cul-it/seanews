@@ -194,6 +194,10 @@ function seanews_create_directory_path($dir_array) {
         dsm("Not writable: $real_path");
         return FALSE;
       }
+      if (!is_writable($destination)) {
+        dsm("Not writable: $destination");
+        return FALSE;
+      }
     }
     else {
       if (!seanews_file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
