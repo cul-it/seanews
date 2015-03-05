@@ -134,7 +134,6 @@ function seanews_action_node_save_publication_issue_move_file($node) {
   dsm('seanews_action_node_save_publication_issue_move_file');
   try {
     $wrapper = entity_metadata_wrapper('node', $node);
-    dsm($wrapper->getPropertyInfo());
     $issue_datetime = $wrapper->field_pub_issue_date->value();
     $issue_year = format_date($issue_datetime, 'custom', 'Y');
     $pub_path = $wrapper->field_pub_issue_pub->field_pub_title_r_cul_path->value();
@@ -192,8 +191,8 @@ function seanews_create_directory_path($dir_array) {
     }
   }
 
-  if (!seanews_file_prepare_directory($destination, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
-    drupal_set_message(t('seanews can\'t create path'), 'error', FALSE);
+  if (!seanews_file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
+    drupal_set_message(t('seanews can\'t create path @d', array('@d' => $destination)), 'error', FALSE);
     throw new Exception("Unable to create path", 1);
   }
 }
