@@ -122,22 +122,22 @@ function seanews_action_node_render_view_text($viewname, $display, $argument1 = 
  * @param  object $node publication issue node
  */
 function seanews_action_node_save_publication_issue_update_expected($node) {
-  dsm('seanews_action_node_save_publication_issue_update_expected');
+  //dsm('seanews_action_node_save_publication_issue_update_expected');
   try {
     if ($node->type != 'publication_issue') {
       throw new Exception("Wrong node type", 1);
     }
     $wrapper = entity_metadata_wrapper('node', $node);
-    dsm($wrapper->getPropertyInfo());
+    //dsm($wrapper->getPropertyInfo());
     $issue_datetime = $wrapper->field_pub_issue_date->value();
     $issue_date = date('Y-m-d H:i:s', $issue_datetime);
     $issue_publicaton = $wrapper->field_pub_issue_pub->nid->value();
     $issue_nid = $wrapper->nid->value();
 
-    dsm($issue_datetime);
-    dsm($issue_date);
-    dsm($issue_publicaton);
-    dsm($issue_nid);
+    //dsm($issue_datetime);
+    //dsm($issue_date);
+    //dsm($issue_publicaton);
+    //dsm($issue_nid);
 
     $query = new EntityFieldQuery();
 
@@ -151,33 +151,29 @@ function seanews_action_node_save_publication_issue_update_expected($node) {
 
     $result = $query->execute();
 
-    /*
-    Prevent:
-    Notice: Undefined property: stdClass::$date_repeat_entity in date_repeat_entity_update_dates() (line 31 of /cul/data/aegir/platforms/dev-seanews-7.34-20150304-2/sites/all/modules/date_repeat_entity/includes/date_repeat_entity.update.inc).
-
-    during node_save below
-    */
-    //drupal_load('module', 'date_repeat_entity');
-    //module_load_include('php', 'date_repeat_entity', 'api');
-    //module_load_include('inc', 'date_repeat_entity', 'includes/date_repeat_entity.utility');
-      module_load_include('inc', 'date_repeat_entity', 'includes/date_repeat_entity.create');
-   module_load_include('inc', 'date_repeat_entity', 'includes/date_repeat_entity.delete');
-   module_load_include('inc', 'date_repeat_entity', 'date_repeat_entity.admin');
-
     if (isset($result['node'])) {
       $expected_nids = array_keys($result['node']);
-      dsm($expected_nids);
+      //dsm($expected_nids);
       foreach ($expected_nids as $found_nid) {
         // update expected issue with a reference to this issue_publication
         // by re-saving the node to recalculate it's computed field
         $node = node_load($found_nid);
+
+        /*
+        Prevent:
+        Notice: Undefined property: stdClass::$date_repeat_entity in date_repeat_entity_update_dates() (line 31 of /cul/data/aegir/platforms/dev-seanews-7.34-20150304-2/sites/all/modules/date_repeat_entity/includes/date_repeat_entity.update.inc).
+
+        during node_save below
+        (means only update the current node's repeating dates)
+        */
         $node->date_repeat_entity['scope'] = 'current';
+
         node_save($node);
-        dsm("set issue for expected issue $found_nid");
+        //dsm("set issue for expected issue $found_nid");
       }
     }
     else {
-      dsm("no expected issues for $issue_nid");
+      //dsm("no expected issues for $issue_nid");
     }
   }
   catch (EntityMetadataWrapperException $exc) {
