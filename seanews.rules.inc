@@ -155,7 +155,11 @@ function seanews_action_node_save_publication_issue_update_expected($node) {
         // update expected issue with a reference to this issue_publication
         $wrapper2 = entity_metadata_wrapper('node', $found_nid);
         $wrapper2->field_expected_issue_lookup->set($issue_nid);
+        dsm("set issue for expected issue $found_nid");
       }
+    }
+    else {
+      dsm("no expected issues for $issue_nid");
     }
   }
   catch (EntityMetadataWrapperException $exc) {
