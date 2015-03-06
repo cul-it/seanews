@@ -126,7 +126,7 @@ function seanews_action_node_save_publication_issue_update_expected($node) {
 }
 
 /**
- * move uploaded issue file to private://<publication>/<year>/foo.ext
+ * move uploaded issue file to private://<publication>/<year>/<month>/foo.ext
  * @param  object $node publication issue node
  * @return [type] [description]
  */
@@ -136,12 +136,13 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     $wrapper = entity_metadata_wrapper('node', $node);
     $issue_datetime = $wrapper->field_pub_issue_date->value();
     $issue_year = format_date($issue_datetime, 'custom', 'Y');
+    $issue_month = format_date($issue_datetime, 'custom', 'm');
     $pub_path = $wrapper->field_pub_issue_pub->field_pub_title_r_cul_path->value();
     $file = $wrapper->field_pub_issue_document->file->value();
     $fid = $wrapper->field_pub_issue_document->file->fid->value();
     $original_name = $file->filename;
 
-    $destination = "private://issues/$pub_path/$issue_year/";
+    $destination = "private://issues/$pub_path/$issue_year/$issue_month/";
 
     if (file_prepare_directory($destination, FILE_CREATE_DIRECTORY) === FALSE) {
       throw new Exception("Unable to create path: $destination", 1);
