@@ -124,4 +124,5 @@ function computed_field_field_expected_issue_lookup_compute(&$entity_field, $ent
  */
 function seanews_repeating_date_has_changed($original_entity, $updated_entity, $entity_type = 'node') {
   dsm('seanews_repeating_date_has_changed');
+  return FALSE;
 }
