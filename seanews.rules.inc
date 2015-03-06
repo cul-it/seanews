@@ -158,7 +158,11 @@ function seanews_action_node_save_publication_issue_update_expected($node) {
     during node_save below
     */
     //drupal_load('module', 'date_repeat_entity');
-    module_load_include('php', 'date_repeat_entity', 'api');
+    //module_load_include('php', 'date_repeat_entity', 'api');
+    //module_load_include('inc', 'date_repeat_entity', 'includes/date_repeat_entity.utility');
+      module_load_include('inc', 'date_repeat_entity', 'includes/date_repeat_entity.create');
+   module_load_include('inc', 'date_repeat_entity', 'includes/date_repeat_entity.delete');
+   module_load_include('inc', 'date_repeat_entity', 'date_repeat_entity.admin');
 
     if (isset($result['node'])) {
       $expected_nids = array_keys($result['node']);
