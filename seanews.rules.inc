@@ -157,7 +157,7 @@ function seanews_action_node_save_publication_issue_update_expected($node) {
 
     during node_save below
     */
-    drupal_load('module', date_repeat_entity);
+    drupal_load('module', 'date_repeat_entity');
 
     if (isset($result['node'])) {
       $expected_nids = array_keys($result['node']);
