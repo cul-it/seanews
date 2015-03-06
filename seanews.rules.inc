@@ -152,6 +152,7 @@ function seanews_action_node_save_publication_issue_update_expected($node) {
     $result = $query->execute();
 
     if (isset($result['node'])) {
+      dsm($result);
       $expected_nids = array_keys($result['node']);
       foreach ($expected_nids as $found_nid) {
         // update expected issue with a reference to this issue_publication
