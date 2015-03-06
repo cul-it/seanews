@@ -151,6 +151,14 @@ function seanews_action_node_save_publication_issue_update_expected($node) {
 
     $result = $query->execute();
 
+    /*
+    Prevent:
+    Notice: Undefined property: stdClass::$date_repeat_entity in date_repeat_entity_update_dates() (line 31 of /cul/data/aegir/platforms/dev-seanews-7.34-20150304-2/sites/all/modules/date_repeat_entity/includes/date_repeat_entity.update.inc).
+
+    during node_save below
+    */
+    drupal_load('module', date_repeat_entity);
+
     if (isset($result['node'])) {
       $expected_nids = array_keys($result['node']);
       dsm($expected_nids);
