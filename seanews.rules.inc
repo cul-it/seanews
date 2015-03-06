@@ -130,10 +130,12 @@ function seanews_action_node_save_publication_issue_update_expected($node) {
     $wrapper = entity_metadata_wrapper('node', $node);
     dsm($wrapper->getPropertyInfo());
     $issue_datetime = $wrapper->field_pub_issue_date->value();
+    $issue_date = date('Y-m-d H:i:s', $issue_datetime);
     $issue_publicaton = $wrapper->field_pub_issue_pub->nid->value();
     $issue_nid = $wrapper->nid->value();
 
     dsm($issue_datetime);
+    dsm($issue_date);
     dsm($issue_publicaton);
     dsm($issue_nid);
 
@@ -142,7 +144,7 @@ function seanews_action_node_save_publication_issue_update_expected($node) {
     $query->entityCondition('entity_type', 'node')
       ->entityCondition('bundle', 'publication_expected_issue')
       ->propertyCondition('status', NODE_PUBLISHED)
-      ->fieldCondition('field_pub_expected_issue_date', 'value', $issue_datetime, '=')
+      ->fieldCondition('field_pub_expected_issue_date', 'value', $issue_date, '=')
       ->fieldCondition('field_publication_ent_reference', 'target_id', $issue_publicaton, '=')
       ->range(0, 10)
       ->addMetaData('account', user_load(1)); // Run the query as user 1.
