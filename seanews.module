@@ -108,3 +108,20 @@ function computed_field_field_expected_issue_lookup_compute(&$entity_field, $ent
   $entity_field[0]['value'] = $found_nid;
 }
 
+/**
+ * Determines if an entity with a repeating date has changed.
+ *
+ * @param object $original_entity
+ *   The original entity before being updated.
+ * @param object $updated_entity
+ *   The updated entity.
+ * @param string $entity_type
+ *   The entity type
+ *
+ * @return bool
+ *   indicates if the date values of an entity with a repeating date
+ *   have materially changed from original to current state.
+ */
+function seanews_repeating_date_has_changed($original_entity, $updated_entity, $entity_type = 'node') {
+  dsm('seanews_repeating_date_has_changed');
+}
