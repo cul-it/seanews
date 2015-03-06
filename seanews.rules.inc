@@ -32,7 +32,7 @@ function seanews_rules_action_info() {
         ),
       );
   $actions['seanews_action_node_save_publication_issue_move_file'] = array(
-      'label' => t('Move the uploaded file into publisher/year private directory.'),
+      'label' => t('Move the uploaded file into publisher/year/month private directory.'),
       'group' => t('Custom'),
       'parameter' => array(
         'node' => array(
@@ -122,7 +122,47 @@ function seanews_action_node_render_view_text($viewname, $display, $argument1 = 
  * @param  object $node publication issue node
  */
 function seanews_action_node_save_publication_issue_update_expected($node) {
- dsm('seanews_action_node_save_publication_issue_update_expected');
+  dsm('seanews_action_node_save_publication_issue_update_expected');
+  try {
+    $wrapper = entity_metadata_wrapper('node', $node);
+    dsm($wrapper->getPropertyInfo());
+    if ($wrapper->type->value() != 'publication_issue') {
+      throw new Exception("Wrong node type", 1);
+    }
+    $issue_datetime = $wrapper->field_pub_issue_date->value();
+    $issue_publicaton = $wrapper->field_pub_issue_pub->value();
+    $issue_nid = $wrapper->nid->value();
+
+    $query = new EntityFieldQuery();
+
+    $query->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'publication_expected_issue')
+      ->propertyCondition('status', NODE_PUBLISHED)
+      ->fieldCondition('field_pub_expected_issue_date', 'value', $issue_datetime, '=')
+      ->fieldCondition('field_publication_ent_reference', 'target_id', $issue_publicaton, '=')
+      ->range(0, 10)
+      ->addMetaData('account', user_load(1)); // Run the query as user 1.
+
+    $result = $query->execute();
+
+    if (isset($result['node'])) {
+      $expected_nids = array_keys($result['node']);
+      foreach ($expected_nids as $found_nid) {
+        // update expected issue with a reference to this issue_publication
+        $wrapper2 = entity_metadata_wrapper('node', $found_nid);
+        $wrapper2->field_expected_issue_lookup->set($issue_nid);
+      }
+    }
+  }
+  catch (EntityMetadataWrapperException $exc) {
+      watchdog(
+        'seanews',
+        'See '  . __FUNCTION__ . '() <pre>' .  $exc->getTraceAsString() . '</pre>',
+         NULL, WATCHDOG_ERROR
+      );
+  }
+  return array('node' => $node);
+
 }
 
 /**
@@ -131,7 +171,6 @@ function seanews_action_node_save_publication_issue_update_expected($node) {
  * @return [type] [description]
  */
 function seanews_action_node_save_publication_issue_move_file($node) {
-  dsm('seanews_action_node_save_publication_issue_move_file');
   try {
     $wrapper = entity_metadata_wrapper('node', $node);
     $issue_datetime = $wrapper->field_pub_issue_date->value();
