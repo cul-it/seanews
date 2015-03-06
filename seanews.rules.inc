@@ -137,37 +137,24 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     $issue_datetime = $wrapper->field_pub_issue_date->value();
     $issue_year = format_date($issue_datetime, 'custom', 'Y');
     $pub_path = $wrapper->field_pub_issue_pub->field_pub_title_r_cul_path->value();
-    dsm(array($issue_year,$pub_path));
     $file = $wrapper->field_pub_issue_document->file->value();
     $fid = $wrapper->field_pub_issue_document->file->fid->value();
     $original_name = $file->filename;
 
     $destination = "private://issues/$pub_path/$issue_year/";
+
     if (file_prepare_directory($destination, FILE_CREATE_DIRECTORY) === FALSE) {
       throw new Exception("Unable to create path: $destination", 1);
     }
-
-    // dsm(array($file,$fid,$original_name));
-
-    // // create directories in path one by one to set correct permissions & group ownership
-    // $path_steps = array('issues', $pub_path, $issue_year);
-    // if (($destination = seanews_create_directory_path($path_steps)) === FALSE) {
-    //   throw new Exception("Unable to create path", 1);
-    // }
+    $new_file = file_copy($file, $destination .  $original_name, FILE_EXISTS_RENAME);
+    if ($new_file) {
+       $new_file->status = FILE_STATUS_PERMANENT;
+       drupal_chmod($new_file->uri, 0775);
+       $new_file = file_save($new_file);
+       $wrapper->field_pub_issue_document->file->set($new_file);
+    }
     else {
-      dsm($destination);
-      $new_file = file_copy($file, $destination .  $original_name, FILE_EXISTS_RENAME);
-      if ($new_file) {
-         $new_file->status = FILE_STATUS_PERMANENT;
-         drupal_chmod($new_file->uri, 0775);
-         $new_file = file_save($new_file);
-         dsm('file saved');
-         $wrapper->field_pub_issue_document->file->set($new_file);
-         dsm('file updated in wrapper');
-      }
-      else {
-        dsm('no new_file');
-      }
+      throw new Exception("Unable to move file to $destination", 1);
     }
   }
   catch (EntityMetadataWrapperException $exc) {
@@ -180,64 +167,3 @@ function seanews_action_node_save_publication_issue_move_file($node) {
   return array('node' => $node);
 }
 
-/**
- * create, permission, and owner all the directories in the given path
- * @param  array $dir_array folders in path
- *                                eg. array('issues', 'sun-times', '2014')
- * @return string            path in private files directory
- *                                eg. private://issues/sun-times/2014/
- *                FALSE if it fails
- */
-function seanews_create_directory_path($dir_array) {
-  // create directories in path one by one to set correct permissions & ownership
-  $destination = 'private://';
-  foreach ($dir_array as $dir) {
-    $destination .= $dir . '/';
-    $real_path = drupal_realpath($destination);
-    if (!file_exists($real_path) && !@mkdir($real_path)) {
-      dsm("mkdir failed $real_path");
-      return FALSE;
-    }
-    if (!is_writable($destination)) {
-      dsm("destination Not writable: $destination");
-    }
-    if (!is_writable($real_path)) {
-      dsm("real_path Not writable: $real_path");
-    }
-  }
-
-  //$ignore_not_writable = seanews_file_prepare_directory($destination, FILE_CREATE_DIRECTORY);
-
-  return $destination;
-}
-
-function seanews_file_prepare_directory(&$directory, $options = FILE_MODIFY_PERMISSIONS) {
-  $real_path = $directory;
-  if (!file_stream_wrapper_valid_scheme(file_uri_scheme($directory))) {
-    // Only trim if we're not dealing with a stream.
-    $directory = rtrim($directory, '/\\');
-  } else {
-    $real_path = drupal_realpath($directory);
-  }
-
-  // Check if directory exists.
-  if (!is_dir($real_path)) {
-    // Let mkdir() recursively create directories and use the default directory
-    // permissions.
-    if (($options & FILE_CREATE_DIRECTORY) && @drupal_mkdir($directory, NULL, TRUE)) {
-      dsm('exit 1');
-      return drupal_chmod($directory);
-    }
-    dsm('fail 1');
-    return FALSE;
-  }
-  // The directory exists, so check to see if it is writable.
-  $writable = is_writable($directory);
-  if (!$writable && ($options & FILE_MODIFY_PERMISSIONS)) {
-    dsm(array('exit 2',$directory,drupal_chmod($directory)));
-    return drupal_chmod($directory);
-  }
-
-  dsm('exit 3');
-  return $writable;
-}
