@@ -208,7 +208,7 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     if (file_prepare_directory($destination, FILE_CREATE_DIRECTORY) === FALSE) {
       throw new Exception("Unable to create path: $destination", 1);
     }
-    $new_file = file_copy($file, $destination .  $original_name, FILE_EXISTS_RENAME);
+    $new_file = file_move($file, $destination .  $original_name, FILE_EXISTS_RENAME);
     if ($new_file) {
        $new_file->status = FILE_STATUS_PERMANENT;
        drupal_chmod($new_file->uri, 0775);
