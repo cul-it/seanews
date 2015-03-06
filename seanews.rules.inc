@@ -130,7 +130,7 @@ function seanews_action_node_save_publication_issue_update_expected($node) {
     $wrapper = entity_metadata_wrapper('node', $node);
     dsm($wrapper->getPropertyInfo());
     $issue_datetime = $wrapper->field_pub_issue_date->value();
-    $issue_publicaton = $wrapper->field_pub_issue_pub->value();
+    $issue_publicaton = $wrapper->field_pub_issue_pub->nid->value();
     $issue_nid = $wrapper->nid->value();
 
     dsm($issue_datetime);
