@@ -152,13 +152,13 @@ function seanews_action_node_save_publication_issue_update_expected($node) {
     $result = $query->execute();
 
     if (isset($result['node'])) {
-      dsm($result);
       $expected_nids = array_keys($result['node']);
       dsm($expected_nids);
       foreach ($expected_nids as $found_nid) {
         // update expected issue with a reference to this issue_publication
-        $wrapper2 = entity_metadata_wrapper('node', $found_nid);
-        $wrapper2->field_expected_issue_lookup->set($issue_nid);
+        // by re-saving the node to recalculate it's computed field
+        $node = node_load($found_nid);
+        node_save($node);
         dsm("set issue for expected issue $found_nid");
       }
     }
