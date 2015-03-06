@@ -124,14 +124,18 @@ function seanews_action_node_render_view_text($viewname, $display, $argument1 = 
 function seanews_action_node_save_publication_issue_update_expected($node) {
   dsm('seanews_action_node_save_publication_issue_update_expected');
   try {
-    $wrapper = entity_metadata_wrapper('node', $node);
-    dsm($wrapper->getPropertyInfo());
-    if ($wrapper->type->value() != 'publication_issue') {
+    if ($node->type != 'publication_issue') {
       throw new Exception("Wrong node type", 1);
     }
+    $wrapper = entity_metadata_wrapper('node', $node);
+    dsm($wrapper->getPropertyInfo());
     $issue_datetime = $wrapper->field_pub_issue_date->value();
     $issue_publicaton = $wrapper->field_pub_issue_pub->value();
     $issue_nid = $wrapper->nid->value();
+
+    dsm($issue_datetime);
+    dsm($issue_publicaton);
+    dsm($issue_nid);
 
     $query = new EntityFieldQuery();
 
