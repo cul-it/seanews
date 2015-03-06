@@ -171,6 +171,7 @@ function seanews_action_node_save_publication_issue_update_expected($node) {
         // update expected issue with a reference to this issue_publication
         // by re-saving the node to recalculate it's computed field
         $node = node_load($found_nid);
+        $node->date_repeat_entity['scope'] = 'current';
         node_save($node);
         dsm("set issue for expected issue $found_nid");
       }
