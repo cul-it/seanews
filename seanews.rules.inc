@@ -142,7 +142,7 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     $fid = $wrapper->field_pub_issue_document->file->fid->value();
     $original_name = $file->filename;
 
-    $destination = "private://issues/$pub_path/$issue_year/"
+    $destination = "private://issues/$pub_path/$issue_year/";
     if (file_prepare_directory($destination, FILE_CREATE_DIRECTORY) === FALSE) {
       throw new Exception("Unable to create path: $destination", 1);
     }
