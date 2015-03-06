@@ -141,13 +141,19 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     $file = $wrapper->field_pub_issue_document->file->value();
     $fid = $wrapper->field_pub_issue_document->file->fid->value();
     $original_name = $file->filename;
-    dsm(array($file,$fid,$original_name));
 
-    // create directories in path one by one to set correct permissions & group ownership
-    $path_steps = array('issues', $pub_path, $issue_year);
-    if (($destination = seanews_create_directory_path($path_steps)) === FALSE) {
-      throw new Exception("Unable to create path", 1);
+    $destination = "private://issues/$pub_path/$issue_year/"
+    if (file_prepare_directory($destination, FILE_CREATE_DIRECTORY) === FALSE) {
+      throw new Exception("Unable to create path: $destination", 1);
     }
+
+    // dsm(array($file,$fid,$original_name));
+
+    // // create directories in path one by one to set correct permissions & group ownership
+    // $path_steps = array('issues', $pub_path, $issue_year);
+    // if (($destination = seanews_create_directory_path($path_steps)) === FALSE) {
+    //   throw new Exception("Unable to create path", 1);
+    // }
     else {
       dsm($destination);
       $new_file = file_copy($file, $destination .  $original_name, FILE_EXISTS_RENAME);
