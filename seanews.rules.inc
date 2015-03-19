@@ -203,10 +203,18 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     $fid = $wrapper->field_pub_issue_document->file->fid->value();
     $original_name = $file->filename;
 
+    /*
+    file_prepare_directory only sets permission on the last directory in the path, so
+    step through each level of the path in case one needs to be created
     $destination = "private://issues/$pub_path/$issue_year/$issue_month/";
-
-    if (file_prepare_directory($destination, FILE_CREATE_DIRECTORY) === FALSE) {
-      throw new Exception("Unable to create path: $destination", 1);
+    */
+    $steps = array('issues', $pub_path, $issue_year, $issue_month);
+    $destination = "private://";
+    foreach ($steps as $directory) {
+      $destination += "$directory/"
+      if (file_prepare_directory($destination, FILE_CREATE_DIRECTORY) === FALSE) {
+        throw new Exception("Unable to create path: $destination", 1);
+      }
     }
     $new_file = file_move($file, $destination .  $original_name, FILE_EXISTS_RENAME);
     if ($new_file) {
