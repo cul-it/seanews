@@ -211,7 +211,7 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     $steps = array('issues', $pub_path, $issue_year, $issue_month);
     $destination = "private://";
     foreach ($steps as $directory) {
-      $destination += "$directory/"
+      $destination .= "$directory/";
       if (file_prepare_directory($destination, FILE_CREATE_DIRECTORY) === FALSE) {
         throw new Exception("Unable to create path: $destination", 1);
       }
