@@ -201,7 +201,7 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     $pub_path = $wrapper->field_pub_issue_pub->field_pub_title_r_cul_path->value();
 
     // loop over multiple uploaded files
-    $new_file_found = FALSE:
+    $new_file_found = FALSE;
     foreach ($wrapper->field_pub_issue_document->getIterator() as $delta => $item_wrapper) {
       $file = $item_wrapper->file->value();
       $fid = $item_wrapper->file->fid->value();
