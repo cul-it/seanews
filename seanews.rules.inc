@@ -201,11 +201,36 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     $pub_path = $wrapper->field_pub_issue_pub->field_pub_title_r_cul_path->value();
     dpm($wrapper->getPropertyInfo()); //debug
     foreach ($wrapper->field_pub_issue_document->getIterator() as $delta => $item_wrapper) {
-      dpm($item_wrapper->getPropertyInfo());
+      //dpm($item_wrapper->getPropertyInfo());
       $file = $item_wrapper->file->value();
-      dpm($file);
+      //dpm($file);
       $fid = $item_wrapper->file->fid->value();
-      dpm($fid);
+      //dpm($fid);
+      $original_name = $file->filename;
+
+      /*
+      file_prepare_directory only sets permission on the last directory in the path, so
+      step through each level of the path in case one needs to be created
+      $destination = "private://issues/$pub_path/$issue_year/$issue_month/";
+      */
+      $steps = array('issues', $pub_path, $issue_year, $issue_month);
+      $destination = "private://";
+      foreach ($steps as $directory) {
+        $destination .= "$directory/";
+        if (file_prepare_directory($destination, FILE_CREATE_DIRECTORY) === FALSE) {
+          throw new Exception("Unable to create path: $destination", 1);
+        }
+      }
+      $new_file = file_move($file, $destination .  $original_name, FILE_EXISTS_RENAME);
+      if ($new_file) {
+         $new_file->status = FILE_STATUS_PERMANENT;
+         drupal_chmod($new_file->uri, 0775);
+         $new_file = file_save($new_file);
+         $wrapper->field_pub_issue_document->file->set($new_file);
+      }
+      else {
+        throw new Exception("Unable to move file to $destination", 1);
+      }
     }
     return;
     $file = $wrapper->field_pub_issue_document->file->value();
