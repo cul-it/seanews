@@ -201,6 +201,7 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     $pub_path = $wrapper->field_pub_issue_pub->field_pub_title_r_cul_path->value();
 
     // loop over multiple uploaded files
+    $new_file_found = FALSE:
     foreach ($wrapper->field_pub_issue_document->getIterator() as $delta => $item_wrapper) {
       $file = $item_wrapper->file->value();
       $fid = $item_wrapper->file->fid->value();
@@ -225,11 +226,15 @@ function seanews_action_node_save_publication_issue_move_file($node) {
          drupal_chmod($new_file->uri, 0775);
          $new_file = file_save($new_file);
          $item_wrapper->file->set($new_file);
+         $new_file_found = TRUE;
       }
       else {
         throw new Exception("Unable to move file to $destination", 1);
       }
     }
+    if ($new_file_found) {
+      $wrapper->save();
+      }
   }
   catch (EntityMetadataWrapperException $exc) {
       watchdog(
