@@ -200,7 +200,7 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     $issue_month = format_date($issue_datetime, 'custom', 'm');
     $pub_path = $wrapper->field_pub_issue_pub->field_pub_title_r_cul_path->value();
     dpm($wrapper->getPropertyInfo()); //debug
-    foreach ($wrapper->field_pub_issue_document->file->getIterator() as $delta => $item_wrapper) {
+    foreach ($wrapper->field_pub_issue_document->getIterator() as $delta => $item_wrapper) {
       dpm($item_wrapper->getPropertyInfo());
     }
     return;
