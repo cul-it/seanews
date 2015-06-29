@@ -226,7 +226,7 @@ function seanews_action_node_save_publication_issue_move_file($node) {
          $new_file->status = FILE_STATUS_PERMANENT;
          drupal_chmod($new_file->uri, 0775);
          $new_file = file_save($new_file);
-         $wrapper->field_pub_issue_document->file->set($new_file);
+         $item_wrapper->file->set($new_file);
       }
       else {
         throw new Exception("Unable to move file to $destination", 1);
