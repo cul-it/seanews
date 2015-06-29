@@ -202,6 +202,10 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     dpm($wrapper->getPropertyInfo()); //debug
     foreach ($wrapper->field_pub_issue_document->getIterator() as $delta => $item_wrapper) {
       dpm($item_wrapper->getPropertyInfo());
+      $file = $item_wrapper->file->value();
+      dpm($file);
+      $fid = $item_wrapper->file->fid->value();
+      dpm($fid);
     }
     return;
     $file = $wrapper->field_pub_issue_document->file->value();
