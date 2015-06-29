@@ -199,13 +199,11 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     $issue_year = format_date($issue_datetime, 'custom', 'Y');
     $issue_month = format_date($issue_datetime, 'custom', 'm');
     $pub_path = $wrapper->field_pub_issue_pub->field_pub_title_r_cul_path->value();
-    dpm($wrapper->getPropertyInfo()); //debug
+
+    // loop over multiple uploaded files
     foreach ($wrapper->field_pub_issue_document->getIterator() as $delta => $item_wrapper) {
-      //dpm($item_wrapper->getPropertyInfo());
       $file = $item_wrapper->file->value();
-      //dpm($file);
       $fid = $item_wrapper->file->fid->value();
-      //dpm($fid);
       $original_name = $file->filename;
 
       /*
