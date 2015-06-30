@@ -115,8 +115,8 @@ function seanews_facetapi_facet_info($searcher_info) {
 
   $facets['seanews_filemime'] = array(
     'field' => 'seanews_filemime',
-    'label' => t('File Type'),
-    'description' => t('Filter by File Type'),
+    'label' => t('File Type seanews'),
+    'description' => t('Filter by File Type seanews'),
   );
   return $facets;
 }
