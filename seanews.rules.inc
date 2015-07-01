@@ -199,34 +199,42 @@ function seanews_action_node_save_publication_issue_move_file($node) {
     $issue_year = format_date($issue_datetime, 'custom', 'Y');
     $issue_month = format_date($issue_datetime, 'custom', 'm');
     $pub_path = $wrapper->field_pub_issue_pub->field_pub_title_r_cul_path->value();
-    dpm($wrapper->field_pub_issue_document->getPropertyInfo()); //debug
-    $file = $wrapper->field_pub_issue_document->file->value();
-    $fid = $wrapper->field_pub_issue_document->file->fid->value();
-    $original_name = $file->filename;
 
-    /*
-    file_prepare_directory only sets permission on the last directory in the path, so
-    step through each level of the path in case one needs to be created
-    $destination = "private://issues/$pub_path/$issue_year/$issue_month/";
-    */
-    $steps = array('issues', $pub_path, $issue_year, $issue_month);
-    $destination = "private://";
-    foreach ($steps as $directory) {
-      $destination .= "$directory/";
-      if (file_prepare_directory($destination, FILE_CREATE_DIRECTORY) === FALSE) {
-        throw new Exception("Unable to create path: $destination", 1);
+    // loop over multiple uploaded files
+    $new_file_found = FALSE;
+    foreach ($wrapper->field_pub_issue_document->getIterator() as $delta => $item_wrapper) {
+      $file = $item_wrapper->file->value();
+      $fid = $item_wrapper->file->fid->value();
+      $original_name = $file->filename;
+
+      /*
+      file_prepare_directory only sets permission on the last directory in the path, so
+      step through each level of the path in case one needs to be created
+      $destination = "private://issues/$pub_path/$issue_year/$issue_month/";
+      */
+      $steps = array('issues', $pub_path, $issue_year, $issue_month);
+      $destination = "private://";
+      foreach ($steps as $directory) {
+        $destination .= "$directory/";
+        if (file_prepare_directory($destination, FILE_CREATE_DIRECTORY) === FALSE) {
+          throw new Exception("Unable to create path: $destination", 1);
+        }
+      }
+      $new_file = file_move($file, $destination .  $original_name, FILE_EXISTS_RENAME);
+      if ($new_file) {
+         $new_file->status = FILE_STATUS_PERMANENT;
+         drupal_chmod($new_file->uri, 0775);
+         $new_file = file_save($new_file);
+         $item_wrapper->file->set($new_file);
+         $new_file_found = TRUE;
+      }
+      else {
+        throw new Exception("Unable to move file to $destination", 1);
       }
     }
-    $new_file = file_move($file, $destination .  $original_name, FILE_EXISTS_RENAME);
-    if ($new_file) {
-       $new_file->status = FILE_STATUS_PERMANENT;
-       drupal_chmod($new_file->uri, 0775);
-       $new_file = file_save($new_file);
-       $wrapper->field_pub_issue_document->file->set($new_file);
-    }
-    else {
-      throw new Exception("Unable to move file to $destination", 1);
-    }
+    if ($new_file_found) {
+      $wrapper->save();
+      }
   }
   catch (EntityMetadataWrapperException $exc) {
       watchdog(
