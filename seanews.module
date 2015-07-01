@@ -108,15 +108,3 @@ function computed_field_field_expected_issue_lookup_compute(&$entity_field, $ent
   $entity_field[0]['value'] = $found_nid;
 }
 
-function seanews_facetapi_facet_info($searcher_info) {
-  dpm($searcher_info);
-
-  $facets = array();
-
-  $facets['seanews_filemime'] = array(
-    'field' => 'seanews_filemime',
-    'label' => t('File Type seanews'),
-    'description' => t('Filter by File Type seanews'),
-  );
-  return $facets;
-}
