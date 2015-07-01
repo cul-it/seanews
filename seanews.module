@@ -107,3 +107,4 @@ function computed_field_field_expected_issue_lookup_compute(&$entity_field, $ent
 
   $entity_field[0]['value'] = $found_nid;
 }
+
