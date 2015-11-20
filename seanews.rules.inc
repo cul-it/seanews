@@ -187,6 +187,13 @@ function seanews_action_node_save_publication_issue_update_expected($node) {
 
 }
 
+function seanews_s3_string($str) {
+  $bad = array(' ', '_', '.-', '-.', '\\', '/');
+  $aok = array('-', '-', '-',  '-',  '-',  '-');
+  $str = str_replace($bad, $aok, $str);
+  $str = preg_replace('/[^a-z0-9\-]', '', $str);
+}
+
 /**
  * move uploaded issue file to private://<publication>/<year>/<month>/foo.ext
  * @param  object $node publication issue node
