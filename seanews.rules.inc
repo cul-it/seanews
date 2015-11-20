@@ -216,8 +216,11 @@ function seanews_action_node_save_publication_issue_move_file($node) {
       $destination = "private://";
       foreach ($steps as $directory) {
         $destination .= "$directory/";
-        if (file_prepare_directory($destination, FILE_CREATE_DIRECTORY) === FALSE) {
-          throw new Exception("Unable to create path: $destination", 1);
+        // if (file_prepare_directory($destination, FILE_CREATE_DIRECTORY) === FALSE) {
+        //   throw new Exception("Unable to create path: $destination", 1);
+        // }
+        if (mkdir($destination, 0775, true) === false) {
+          throw new Exception("Unable to create path mkdir: $destination", 1);
         }
       }
       $new_file = file_move($file, $destination .  $original_name, FILE_EXISTS_RENAME);
