@@ -224,6 +224,8 @@ function seanews_action_node_save_publication_issue_move_file($node) {
         // }
         // purposfully not checking error!!
         file_prepare_directory($destination, FILE_CREATE_DIRECTORY);
+        $temp = drupal_tempnam($destination, 'placeholder');
+        dpm($temp, 'temp name');
       }
       $new_file = file_move($file, $destination .  $original_name, FILE_EXISTS_REPLACE);
       if ($new_file) {
