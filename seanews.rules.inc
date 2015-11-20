@@ -187,11 +187,18 @@ function seanews_action_node_save_publication_issue_update_expected($node) {
 
 }
 
-function seanews_s3_string($str) {
+function seanews_s3_folder($str) {
   $bad = array(' ', '_', '.-', '-.', '\\', '/');
   $aok = array('-', '-', '-',  '-',  '-',  '-');
   $str = str_replace($bad, $aok, $str);
-  $str = preg_replace('/[^a-z0-9\-]', '', $str);
+  $str = preg_replace('/[^a-z0-9\-\.]/', '', $str);
+  if (strlen($str) < 3 || strlen($str) > 63) {
+    throw new Exception("S3 string length exception", 1);
+  }
+  if (preg_match('/[a-z0-9]/', substr($str, 0, 1)) != 1) {
+    $str = 'a' . $str;
+  }
+
 }
 
 /**
