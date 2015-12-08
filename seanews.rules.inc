@@ -239,13 +239,16 @@ function seanews_action_node_save_publication_issue_move_file($node) {
         // purposfully not checking error!!
         file_prepare_directory($destination, FILE_CREATE_DIRECTORY);
         $temp = drupal_tempnam($destination, 'placeholder');
-        dpm($temp, 'temp name');
+        //dpm($temp, 'temp name');
       }
+      dpm("file_move to $destination $original_name");
       $new_file = file_move($file, $destination .  $original_name, FILE_EXISTS_REPLACE);
       if ($new_file) {
          $new_file->status = FILE_STATUS_PERMANENT;
          drupal_chmod($new_file->uri, 0775);
+         dpm("file_save $new_file");
          $new_file = file_save($new_file);
+         dpm("wrapper file set");
          $item_wrapper->file->set($new_file);
          $new_file_found = TRUE;
       }
@@ -254,6 +257,7 @@ function seanews_action_node_save_publication_issue_move_file($node) {
       }
     }
     if ($new_file_found) {
+      dpm("wrapper save");
       $wrapper->save();
       }
   }
