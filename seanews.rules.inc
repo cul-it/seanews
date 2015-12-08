@@ -246,7 +246,7 @@ function seanews_action_node_save_publication_issue_move_file($node) {
       if ($new_file) {
          $new_file->status = FILE_STATUS_PERMANENT;
          drupal_chmod($new_file->uri, 0775);
-         dpm("file_save $new_file");
+         dpm("file_save $new_file->uri");
          $new_file = file_save($new_file);
          dpm("wrapper file set");
          $item_wrapper->file->set($new_file);
