@@ -207,6 +207,7 @@ function seanews_s3_folder($str) {
  * @return [type] [description]
  */
 function seanews_action_node_save_publication_issue_move_file($node) {
+  return array('node' => $node);
   try {
     $wrapper = entity_metadata_wrapper('node', $node);
     $issue_datetime = $wrapper->field_pub_issue_date->value();
