@@ -180,10 +180,6 @@ function seanews_token_info() {
     'name' => t("Short name"),
     'description' => t("Short (2 character) hash directory name"),
     );
-  // $seapapers_tokens['long_dir'] = array(
-  //   'name' => t("Long name"),
-  //   'description' => t("Long hash directory name"),
-  //   );
 
   return array(
     'types' => $types,
@@ -210,10 +206,7 @@ function seanews_tokens($type, $tokens, array $data = array(), array $options = 
           foreach (array_rand($chars, 2) as $k) $rand .= $chars[$k];
           $replacements[$original] = $rand;
           break;
-        // case 'long_dir':
-        //   $replacements[$original] = $user->mail;
-        //   break;
-      }
+       }
     }
   }
 
