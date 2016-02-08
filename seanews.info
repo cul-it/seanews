@@ -6,3 +6,4 @@ core = 7.x
 dependencies[] = transliteration
 dependencies[] = date_repeat_entity
 dependencies[] = seapapers_feature
+dependencies[] = token
