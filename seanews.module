@@ -207,7 +207,7 @@ function seanews_tokens($type, $tokens, array $data = array(), array $options = 
         case 'short_dir':
           $chars = str_split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
           $rand = '';
-          foreach (array_rand($chars, 2) as $k) $rand .= $k;
+          foreach (array_rand($chars, 2) as $k) $rand .= $chars[$k];
           $replacements[$original] = $rand;
           break;
         // case 'long_dir':
