@@ -163,3 +163,59 @@ function seanews_misc_update_7000() {
   module_enable($modules);
   //variable_set('search_restrict_content_type', $restrict);
 }
+
+/**
+ * Implements hook_token_info();
+ *
+ * @return array info for the token module
+ */
+function seanews_token_info() {
+  $types['seapapers'] = array(
+    'name' => t("SEAPapers Tokens"),
+    'description' => t("Tokens to use on the SEAPapers site"),
+    );
+
+  // our tokens
+  $seapapers_tokens['short_dir'] = array(
+    'name' => t("Short name"),
+    'description' => t("Short (2 character) hash directory name"),
+    );
+  // $seapapers_tokens['long_dir'] = array(
+  //   'name' => t("Long name"),
+  //   'description' => t("Long hash directory name"),
+  //   );
+
+  return array(
+    'types' => $types,
+    'tokens' => array(
+      'seapapers' => $seapapers_tokens,
+      ),
+    );
+
+}
+
+/**
+ * Implements hook_tokens()
+ *
+ */
+function seanews_tokens($type, $tokens, array $data = array(), array $options = array()) {
+  $replacements = array();
+
+  if ($type == 'seapapers') {
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        case 'short_dir':
+          $chars = str_split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
+          $rand = '';
+          foreach (array_rand($chars, 2) as $k) $rand .= $k;
+          $replacements[$original] = $rand;
+          break;
+        // case 'long_dir':
+        //   $replacements[$original] = $user->mail;
+        //   break;
+      }
+    }
+  }
+
+  return $replacements;
+  }
