@@ -187,12 +187,27 @@ function seanews_action_node_save_publication_issue_update_expected($node) {
 
 }
 
+function seanews_s3_folder($str) {
+  $bad = array(' ', '_', '.-', '-.', '\\', '/');
+  $aok = array('-', '-', '-',  '-',  '-',  '-');
+  $str = str_replace($bad, $aok, $str);
+  $str = preg_replace('/[^a-z0-9\-\.]/', '', $str);
+  if (strlen($str) < 3 || strlen($str) > 63) {
+    throw new Exception("S3 string length exception", 1);
+  }
+  if (preg_match('/[a-z0-9]/', substr($str, 0, 1)) != 1) {
+    $str = 'a' . $str;
+  }
+
+}
+
 /**
  * move uploaded issue file to private://<publication>/<year>/<month>/foo.ext
  * @param  object $node publication issue node
  * @return [type] [description]
  */
 function seanews_action_node_save_publication_issue_move_file($node) {
+  return array('node' => $node);
   try {
     $wrapper = entity_metadata_wrapper('node', $node);
     $issue_datetime = $wrapper->field_pub_issue_date->value();
@@ -216,15 +231,25 @@ function seanews_action_node_save_publication_issue_move_file($node) {
       $destination = "private://";
       foreach ($steps as $directory) {
         $destination .= "$directory/";
-        if (file_prepare_directory($destination, FILE_CREATE_DIRECTORY) === FALSE) {
-          throw new Exception("Unable to create path: $destination", 1);
-        }
+        // if (file_prepare_directory($destination, FILE_CREATE_DIRECTORY) === FALSE) {
+        //   throw new Exception("Unable to create path: $destination", 1);
+        // }
+        // if (mkdir($destination, 0775, true) === false) {
+        //   throw new Exception("Unable to create path mkdir: $destination", 1);
+        // }
+        // purposfully not checking error!!
+        file_prepare_directory($destination, FILE_CREATE_DIRECTORY);
+        $temp = drupal_tempnam($destination, 'placeholder');
+        //dpm($temp, 'temp name');
       }
+      dpm("file_move to $destination $original_name");
       $new_file = file_move($file, $destination .  $original_name, FILE_EXISTS_RENAME);
       if ($new_file) {
          $new_file->status = FILE_STATUS_PERMANENT;
          drupal_chmod($new_file->uri, 0775);
+         dpm("file_save $new_file->uri");
          $new_file = file_save($new_file);
+         dpm("wrapper file set");
          $item_wrapper->file->set($new_file);
          $new_file_found = TRUE;
       }
@@ -233,6 +258,7 @@ function seanews_action_node_save_publication_issue_move_file($node) {
       }
     }
     if ($new_file_found) {
+      dpm("wrapper save");
       $wrapper->save();
       }
   }
