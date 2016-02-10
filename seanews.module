@@ -109,6 +109,42 @@ function computed_field_field_expected_issue_lookup_compute(&$entity_field, $ent
 }
 
 /**
+ * automatic node titles module somehow dooes not create a proper value for the title if the user has
+ * pressed the Upload button for the publication issue ([node:field-pub-issue-pub:title] is not resolved)
+ * This puts yyyy-mm-dd <publication name> in the title field
+ */
+function computed_field_field_pub_issue_title_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
+
+  // find the issue date
+  $field_items = field_get_items($entity_type, $entity, 'field_pub_issue_date');
+  dpm($field_items, 'field_pub_issue_date');
+  $no_lang = array_pop($field_items);
+  $issue_date = $no_lang['value'];
+  $parts = explode(' ', $issue_date);
+  $issue_date = array_shift($parts); // original form is 'yyyy-mm-dd hh:mm:ss'
+  dpm($issue_date, 'issue date');
+
+  // find the publication title
+  $field_items = field_get_items($entity_type, $entity, 'field_pub_issue_pub');
+  dpm($field_items, 'field_pub_issue_pub');
+  if (!empty($field_items) && is_array($field_items)) {
+    $no_lang = array_pop($field_items);
+    $pub_nid = array_pop($no_lang);
+    $pub = node_load($pub_nid);
+    dpm($pub);
+    $publication = $pub->title;
+  }
+  else {
+    $publication = 'unknown';
+  }
+  dpm($publication, 'publication');
+
+  dpm($entity);
+
+  $entity_field[0]['value'] = "$issue_date $publication";
+}
+
+/**
  * Implements hook_update_N()
  * Enables modules required by function seanews feature
  */
@@ -201,9 +237,9 @@ function seanews_tokens($type, $tokens, array $data = array(), array $options = 
     foreach ($tokens as $name => $original) {
       switch ($name) {
         case 'short_dir':
-          $chars = str_split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
-          $rand = '';
-          foreach (array_rand($chars, 2) as $k) $rand .= $chars[$k];
+          $chars = str_split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+          $rand = $chars[array_rand($chars)];
+          $rand .= strval(mt_rand(0,9));
           $replacements[$original] = $rand;
           break;
        }
