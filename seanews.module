@@ -261,7 +261,7 @@ function seanews_preprocess_search_result(&$variables) {
     $type = $variables['result']['entity_type'];
     $nid = $variables['result']['node']->entity_id;
     $node = node_load($nid);
-    if ($node->type == 'section') {
+    if (!empty($node) && ($node->type == 'section')) {
       $wrapper = entity_metadata_wrapper($type, $node);
       $file = $wrapper->field_section_document->value();
       $variables['url'] = file_create_url($file['uri']);
