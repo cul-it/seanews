@@ -25,6 +25,38 @@
  *     via entity reference field_pub_issue_pub
  */
 
+function computed_field_field_pub_section_link_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
+  $pub_title = field_get_items($entity_type, $entity, "field_pub_title_r_cul");
+  $title = $pub_title[0]['value'];
+
+  // get taxonomy id
+  $vocab = taxonomy_vocabulary_machine_name_load('cul_romanized_publication_title');
+  $vid = $vocab->vid;
+
+  // get taxonomy term id
+  $query = new EntityFieldQuery;
+  $result = $query
+    ->entityCondition('entity_type', 'taxonomy_term')
+    ->propertyCondition('name', $title)
+    ->propertyCondition('vid', $vid )
+    ->execute();
+  if (empty($result['taxonomy_term'])) {
+    $entity_field[0]['value'] = '';
+  } else {
+    $entity_field[0]['value'] = 'sections/' . key($result['taxonomy_term']);
+  }
+} 
+
+function computed_field_field_pub_section_link_display($field, $entity_field_item, $entity_lang, $langcode, $entity) {
+  if (empty($entity_field_item['value'])){
+    return t('No Issues');
+  } else {
+    $link = $entity_field_item['value'];
+    return t('<a href="@url" title="See issues of this publication">Issues</a>', 
+      array('@url' => url($link)));
+  }
+}
+
 function computed_field_field_pub_title_native_translit_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
   $field_items = field_get_items($entity_type, $entity, 'field_pub_title_native');
   $x = array_pop($field_items);
